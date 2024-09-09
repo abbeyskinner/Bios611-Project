@@ -2,4 +2,4 @@
 ==================
 
 This is the readme for my 611 project
-I am editing this to see how it changes
+I am editing this to see how it changes.
