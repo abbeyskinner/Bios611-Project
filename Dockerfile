@@ -1,4 +1,3 @@
-# Use the rocker/verse base image
 FROM rocker/verse
 
 # Unminimize the Ubuntu system to restore man pages and other documentation
@@ -7,7 +6,7 @@ RUN yes | unminimize
 RUN apt update && apt install -y git man-db
 
 
-# Install man-db and manpages, which are required to view manual pages
+# Install man-db and manpages
 RUN apt update && apt install -y \
     man-db \
     manpages \
