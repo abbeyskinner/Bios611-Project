@@ -1,0 +1,15 @@
+---
+title: "Data Wrangling"
+output: pdf_document
+date: "2024-09-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+read_csv("/home/rstudio/work/data/wine+quality/winequality-red.csv")
+```
+
