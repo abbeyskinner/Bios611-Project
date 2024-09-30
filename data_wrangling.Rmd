@@ -10,47 +10,12 @@ library(tidyverse)
 ```
 
 ```{r}
-red_wine <- read_delim("/home/rstudio/work/data/wine+quality/winequality-red.csv", delim = ";")
-white_wine <- read_delim("/home/rstudio/work/data/wine+quality/winequality-white.csv", delim = ";")
-```
-
-```{r}
-# cleaning data
-red_wine <- red_wine %>%
-  janitor::clean_names() %>%
-  rename("ph" = "p_h")
-
-white_wine <- white_wine %>%
-  janitor::clean_names() %>%
-  rename("ph" = "p_h")
-```
-
-```{r}
-# exploring data
-
-hist(red_wine$fixed_acidity)
-hist(red_wine$volatile_acidity)
-hist(red_wine$citric_acid)
-hist(red_wine$residual_sugar)
-hist(red_wine$chlorides)
-hist(red_wine$free_sulfur_dioxide)
-hist(red_wine$total_sulfur_dioxide)
-hist(red_wine$density)
-hist(red_wine$ph)
-hist(red_wine$sulphates)
-hist(red_wine$alcohol)
-table(as.factor(red_wine$quality))
-
-red_wine %>% group_by(quality) %>% tally()
-
-red_wine %>% filter(quality==8)
-red_wine %>% filter(quality==3) ## sulphates and alcohol are important to good quality??
-
-
-
-
+contestant_data <- read_csv("/home/rstudio/work/data/survivor/contestant_table.csv")
+season_data <- read_csv("/home/rstudio/work/data/survivor/season_table.csv")
+tribe_data <- read_csv("/home/rstudio/work/data/survivor/tribe_table.csv")
 
 ```
+
 
 
 
