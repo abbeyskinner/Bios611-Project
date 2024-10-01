@@ -13,8 +13,136 @@ library(tidyverse)
 contestant_data <- read_csv("/home/rstudio/work/data/survivor/contestant_table.csv")
 season_data <- read_csv("/home/rstudio/work/data/survivor/season_table.csv")
 tribe_data <- read_csv("/home/rstudio/work/data/survivor/tribe_table.csv")
-
 ```
+
+I think I'll def use contestant_data and maybe season_data too but not sure about tribe_data
+
+```{r}
+ggplot(contestant_data, aes(x=age)) +
+  geom_histogram()
+
+ggplot(contestant_data, aes(x=gender)) +
+  geom_bar()
+
+ggplot(contestant_data, aes(x=poc)) +
+  geom_bar()
+
+
+contestant_data %>%
+  group_by(profession) %>%
+  tally()%>% arrange(desc(n))
+
+contestant_data %>%
+  group_by(state) %>%
+  tally()%>% arrange(desc(n))
+```
+I think the profession needs to be tidied:
+Okay what can i combine?
+- Teacher: 4th Grade Teacher, Art Teacher, Elementary Teacher, English Teacher, Gym Teacher, high school teacher
+- Professor: English Professor, English professor
+- Actor: Actor, Actress, Aspiring Actress, former tv teen star
+- Veteran: Air Force Veteran, Army Veteran, Iraq War Veteran, marine
+- Student: Art Student, Business Student, College Student, Cosmetology Student, Crossfit Coach/Physical Therapy Student. Dental Student, Economics Student, full-time student/sales, grad student, graduate student, harvard law student, high school student, Ivy League Student, law school student, law student, law studnet/former military, mba student, medical student
+- Career Consultant + Career Counselor
+- Coach: Baseball/Dating Coach, Basketball Coach, Cheerleading Coach, Crossfit Trainer, Crossfit Coach/Project Coordinator, fitness instructor, former nfl coach, gymnastics coach, hiking guide, life coach/speaker/yoga teacher, navy swim instructro
+- Gym Owner: Competitive Cheerleading Gym Owner, gym owner
+- Attorney: Attorney + Civil Rights Attorney + Defense Attorney, Deputy District Attorney, Divorce Attorney, Attorney/Former NFL Player + Attorney/Retired NFL Player
+- Barista: Barista + Coffee Barista
+- Computer Programmer: Computer Programmer + Computer Engineer
+- Construction: Construction Company Vice President, Construction Supervisor, Construction Worker, highway construction
+- Designer + Aspiring Designer
+- Doctor: Doctor, ER Doctor
+- Entertainment Host + Writer: Entertainment Host and Writer, Entertainment Host/Writer
+- Firefighter: Firefighter, Fireman/EMT
+- Fisher: fisherwoman, fishing boat captain, fishing guide, fishmonnger
+- Pro Athlete: former nba all-star, former nba player, former mlb player, former mfl quarterback, former nhl player,former professional cyclist, former pro cyclist/shop manager, mixed martial arts fighter, nfl player
+- writer: aspiring writer, freelance writer
+- farmer: goat farmer, farmer, goat racher
+- sales: elevator salesman, graphic saleswoman, insurance saleswoman
+- Hairdresser: hairdresser, hairsytlist
+- Singer: country music signer, former pop star, heavy metal musican
+- Animal Trainer: horse trainer, dolphin trainer, dog trainer
+- Internet Project Manager: Internet Projects Manager, Internet Project Manager
+- Jewelry: Jeweler, Jewelry Designer, Jewelry Salesman/Photographer
+- lifeguard: lifeguard + former lifeguard
+
+
+** i stiopped on page 32 -- idk if i want to keep doing this
+** note:  Cheif Lifegaurd, industrial engineer
+
+```{r}
+
+## winners
+contestant_data %>%
+  filter(finish==1) %>%
+  ggplot(aes(x=age))+
+  geom_histogram()
+
+contestant_data %>%
+  filter(finish==1) %>%
+  ggplot(aes(gender)) +
+  geom_bar()
+
+contestant_data %>%
+  filter(finish==1) %>%
+  ggplot(aes(poc)) +
+  geom_bar()
+
+contestant_data %>%
+  filter(finish==1) %>% 
+  group_by(profession) %>% tally() %>% arrange(desc(n))
+```
+
+```{r}
+## first voted out
+contestant_data %>%
+  filter(
+    finish==16 & num_season %in% c(1,2,3,4,5,6,7,12,15,18) |
+    finish==18 & num_season %in% c(8,9,11,17,22,23,24,25,28,29,30,32,35,38,41,42,43) |
+    finish==19 & num_season ==14 |
+    finish==20
+  )  %>%
+  ggplot(aes(x=age)) +
+  geom_histogram()
+
+contestant_data %>%
+  filter(
+    finish==16 & num_season %in% c(1,2,3,4,5,6,7,12,15,18) |
+    finish==18 & num_season %in% c(8,9,11,17,22,23,24,25,28,29,30,32,35,38,41,42,43) |
+    finish==19 & num_season ==14 |
+    finish==20
+  )  %>%
+  ggplot(aes(gender)) +
+  geom_bar()
+
+contestant_data %>%
+  filter(
+    finish==16 & num_season %in% c(1,2,3,4,5,6,7,12,15,18) |
+    finish==18 & num_season %in% c(8,9,11,17,22,23,24,25,28,29,30,32,35,38,41,42,43) |
+    finish==19 & num_season ==14 |
+    finish==20
+  )  %>%
+  ggplot(aes(poc)) +
+  geom_bar()
+```
+
+```{r}
+# made the merge
+contestant_data %>%
+  filter(merge==1) %>%
+  ggplot(aes(age)) +
+  geom_histogram()
+
+contestant_data %>%
+  filter(merge==1) %>%
+  ggplot(aes(gender)) +
+  geom_bar()
+
+contestant_data %>%
+  filter(merge==1)%>%
+  group_by(profession) %>% tally() %>% arrange(desc(n))
+```
+
 
 
 
