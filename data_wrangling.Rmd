@@ -18,6 +18,7 @@ tribe_data <- read_csv("/home/rstudio/work/data/survivor/tribe_table.csv")
 I think I'll def use contestant_data and maybe season_data too but not sure about tribe_data
 
 ```{r}
+## probably should look at proportions for most of these 
 ggplot(contestant_data, aes(x=age)) +
   geom_histogram()
 
@@ -91,6 +92,10 @@ contestant_data %>%
 contestant_data %>%
   filter(finish==1) %>% 
   group_by(profession) %>% tally() %>% arrange(desc(n))
+
+contestant_data %>%
+  filter(ftc==1)
+
 ```
 
 ```{r}
@@ -143,7 +148,36 @@ contestant_data %>%
   group_by(profession) %>% tally() %>% arrange(desc(n))
 ```
 
+What are some things I could look at?
+
+What types of people win? What types of people make final tribal (+ dont win?) What types of people get voted out first? What types of people don't make the merge v do make the merge? Is there a "lucky" buff color -- i.e. the first color buff that a contest is assigned to - compare this with winners 1st buff colors.
 
 
+** okay wait... apparently there is an R package called `survivoR` that has data on different things of each season!!!! Im gunna go through them now:
+
+```{r}
+advantage_details
+advantage_movement
+castaways
+castaway_details
+challenge_description
+challenge_results
+challenge_summary
+confessionals %>% arrange(desc(confessional_count))
+episodes %>% arrange(desc(viewers))
+screen_time
+season_summary
+vote_history
+```
+
+```{r}
+challenge_data <- challenge_summary %>%
+ filter(str_starts(version_season, "US"))
 
 
+## I could calculate win percentage by adding up the number of wins and dividing by the number of challenges they competed in
+
+```
+
+
+Okay... plan of action -- this is too much data and its overwhelming so I'm gunna stick with what I have except I want to add win percentage. So i can calculate the win percentages and then filter that data so that it matches with the data I have (bc i only have until season 43 i think -- or I can add the contestants that I'm missing bc I do have all their info). Then i can merge it into my contestant dataset so I can see how win percentage plays a part in your overall play. If im feeling up to it i could also go through the advantage data and make a boolean for if a contestant found an advantage (and if they used it -- used it correctly -- and number of advantages found)

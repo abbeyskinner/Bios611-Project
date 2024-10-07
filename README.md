@@ -1,4 +1,4 @@
 611 Project README
 ==================
 
-Hi, this is my 611 Data Science Project. More to come
+For my 611 Final Project, I will be looking at data on the CBS show 'Survivor'.
