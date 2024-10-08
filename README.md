@@ -79,6 +79,23 @@ here are the relevant variables for confessional_data:
 
 # 5 things of interest in the data
 
-What are 5 things that might be of interest in this data? What variables in the data set might be causaully related or correlated, but can also hypothesize about clusters you may expect to see
+1. Is there a certain demographic of people who tend to win survivor? Make final tribal? Get voted out first? I hypothesize that white males win the most and older women get voted out first.
+
+2. Are there some professions (or fields of professions) that tend to last longer in the game? Are there some that tend to get voted out sooner? I know that some common professions in survivor players are lawyers, firefighters, police officers, and students. I hypothesize that professions that would tend to last longer would be professions that have strong social and communication skills and professions where you need to be deceitful and convincing. So professions such as undercover cops, lawyers, sales, and actors.
+
+3. Has the demographic of players changed over time? If so, has the demographic of those who won, made final tribal, and got voted out first changed over time? I hypothesize that the demographic over time has shifted from mostly white players to more of a mix of many different races. There has always been an equal split of men and women. I am interested to see if this shift has translated into the demographics of winners, final tribal groups, and those voted out first.
+
+4. How is win percentage in challenges related to how long you last in the game? What is average win percentage of those who win? make final tribal? I hypothesize that this relationship would be a curve that increases until a point and then starts to decrease as you can be seen as a threat if you are too strong. 
+
+5. Do advantages help you win? I hypothesize that using advantages correctly may help you win, but sometimes it can put a bigger target on your back. I am interested to see how often winners have had advantages and used them sucessfully (or not). I also am interested to see how often people with advantages get voted out before final tribal council.
+
+6. Do winners get more confessional time? Seasons are filmed far before they are aired, so the producers know who wins the game before editing of the episodes begins. Is there a way to predict who will win the show based on the average number of confessionals each contestant gets per episode? 
+
+
+
+
+
+
+
 
 
