@@ -82,7 +82,7 @@ contestant_data %>%
 contestant_data %>%
   filter(finish==1) %>%
   ggplot(aes(gender)) +
-  geom_bar()
+ geom_bar(aes(fill = as.factor(poc)), position = "dodge")
 
 contestant_data %>%
   filter(finish==1) %>%
@@ -108,7 +108,7 @@ contestant_data %>%
     finish==20
   )  %>%
   ggplot(aes(x=age)) +
-  geom_histogram()
+  geom_histogram(aes(fill = as.factor(gender)))
 
 contestant_data %>%
   filter(
@@ -118,7 +118,7 @@ contestant_data %>%
     finish==20
   )  %>%
   ggplot(aes(gender)) +
-  geom_bar()
+ geom_bar(aes(fill = as.factor(poc)), position = "dodge")
 
 contestant_data %>%
   filter(
@@ -157,7 +157,7 @@ What types of people win? What types of people make final tribal (+ dont win?) W
 
 ```{r}
 advantage_details
-advantage_movement
+advantage_data <- advantage_movement
 castaways
 castaway_details
 challenge_description
@@ -168,12 +168,13 @@ episodes %>% arrange(desc(viewers))
 screen_time
 season_summary
 vote_history
+
+confessional_data <- confessionals
 ```
 
 ```{r}
 challenge_data <- challenge_summary %>%
  filter(str_starts(version_season, "US"))
-
 
 ## I could calculate win percentage by adding up the number of wins and dividing by the number of challenges they competed in
 
