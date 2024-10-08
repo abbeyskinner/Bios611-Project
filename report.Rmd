@@ -1,0 +1,11 @@
+---
+title: "Report"
+output: html_document
+date: "2024-10-07"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+all my work as been in data_wrangling.Rmd so far, but created this for later
