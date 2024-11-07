@@ -72,7 +72,6 @@ Okay what can i combine?
 ** note:  Cheif Lifegaurd, industrial engineer
 
 ```{r}
-
 ## winners
 contestant_data %>%
   filter(finish==1) %>%
@@ -261,16 +260,9 @@ categorize_profession <- function(profession) {
                        "Dental Student", "Pharmacy Technician", "Neurologist", "Personal Nurse", 
                       "Dentist", "Mortician", "Nursing Practitioner", "Retired Nurse", "EMT/Pro Cheerleader",
                       "Physician/Army Orthopedic Surgery Resident", "Physical Therapist", "Neurosurgeon",
-                      "Healthcare Worker", "Therapist", "Heart Valve Specialist") 
-    ~ "Healthcare & Medical",
-    
-    profession %in% c("Biochemist", "Equity Research Assistant", "Chemical Disposal", "Chemist")
-    ~ "Science & Research",
-    
-    profession %in% c("Pharmaceutical Saleswoman", "Pharmaceutical Sales Representative", "Pharmaceutical Sales",
-                        "Medical Saleswoman", "Medical Marijuana Dispenser", "Healthcare Consultant", 
-                        "Medical Sales Representative", "Pharmaceutical Representative") 
-    ~ "Healthcare Sales",
+                      "Healthcare Worker", "Therapist", "Heart Valve Specialist", "Biochemist", "Chemical Disposal",
+                      "Chemist") 
+    ~ "Healthcare & Science",
     
     profession %in% c("Real Estate Developer", "Real Estate Agent", "Real Estate Salesman", "Real State Agent",
                         "Real Estate Broker", "Real Estate Manager", "Property Developer", "Real Estate",
@@ -304,7 +296,10 @@ categorize_profession <- function(profession) {
                       "Vacation Club Sales", "Graphic Saleswoman", "Social Media Strategist", "Tech Sales",
                       "Advertising Account Executive", "Publishing CEO", "District Sales Manager", 
                       "Director of Marketing & Communications", "Cyber Security Saleswoman", 
-                      "Jewelry Salesman/Photographer", "Social Media Manager") 
+                      "Jewelry Salesman/Photographer", "Social Media Manager", "Pharmaceutical Saleswoman", 
+                      "Pharmaceutical Sales Representative", "Pharmaceutical Sales", "Medical Saleswoman", 
+                      "Medical Marijuana Dispenser", "Healthcare Consultant", "Medical Sales Representative",
+                      "Pharmaceutical Representative", "Media Buyer") 
     ~ "Sales & Marketing",
     
     profession %in% c("Actor", "Actress", "Musician", "Singer", "Artist", "Writer", "Comedian", "Broadcaster", 
@@ -325,7 +320,8 @@ categorize_profession <- function(profession) {
                         "Makeup Artist", "Hairstylist", "Nail Salon Manager", "Hairdresser","Pageant Coach",
                       "Aspiring Designer", "T-shirt Designer", "Swimsuit Photographer", "Cosmetologist", "Designer",
                       "Former Miss Delaware", "Male Model", "Miss Kentucky Teen USA", "Furniture Designer",
-                      "Interior Designer") 
+                      "Interior Designer", "Model/Spray Tan Business Owner","Sideline Chic Owner", "Bridal Shop Owner",
+                      "Jeweler") 
     ~ "Fashion & Beauty",
     
     profession %in% c("Business Consultant", "Executive Recruiter", "Corporate Trainer", "Product Manager", 
@@ -335,8 +331,9 @@ categorize_profession <- function(profession) {
                       "Office Assistant", "Equity Trade Manager", "Document Manager", "Risk Consultant", 
                   "Corporate Consultant", "Office Manager", "Banker", "Administrative Officer", "Accountant", 
                   "Corporate Executive", "Asset Manager", "Insurance Adjuster", "Business Analyst", "Case Manager",
-                  "Product Management", "Educational Project Manager", "Project Manager") 
-    ~ "Finance/Business Services",
+                  "Product Management", "Educational Project Manager", "Project Manager", "Equity Research Assistant",
+                  "Business Owner", "Entrepreneur", "Small Business Owner", "Franchise Owner", "Hedge Fund Support") 
+    ~ "Finance & Business Management",
 
     profession %in% c("Lawyer", "District Attorney", "Defense Attorney", "Attorney", "Paralegal", "Judge", 
                     "Trial Attorney", "Civil Rights Attorney", "Legal Secretary", "Public Defender", 
@@ -353,7 +350,7 @@ categorize_profession <- function(profession) {
                       "Oil Tanker Crewman", "Motorcycle Repairwoman", "Tire Repairman", "General Contractor", 
                       "Oil Driller", "Contractor", "Boat Mechanic", "Construction Supervisor", "Maintenance Manager", 
                       "Factory Worker", "Warehouse Associate", "Auto Customizer", "Lumberjill", 
-                      "Water Treatment Technician") 
+                      "Water Treatment Technician", "Oil Company Owner", "Pest Control Company Owner") 
     ~ "Skilled Trades & Technical",
     
     profession %in% c("Police Officer", "FBI Agent", "Security Officer", "Retired Navy Seal", "Army Veteran", 
@@ -379,14 +376,15 @@ categorize_profession <- function(profession) {
                       "Pilates Teacher", "Martial Arts Instructor", "Crossfit Coach/Project Coordinator", 
                       "Sailing Instructor", "Former NBA Player", "Bodybuilder", "Dietitian", "Snowboard Instructor",
                       "NFL Player", "Lifeguard", "Mixed Martial Arts Fighter", "Former NHL Player", "Olympic Medalist",
-                      "Chief Lifeguard", "CrossFit Trainer", "Fitness Consultant", "Roller Girl", "Surf Instructor") 
+                      "Chief Lifeguard", "CrossFit Trainer", "Fitness Consultant", "Roller Girl", "Surf Instructor",
+                      "Competitive Cheerleading Gym Owner", "Miami Marlins President") 
     ~ "Sports & Fitness",
     
    profession %in% c("Social Worker", "Youth Pastor", "Youth Mentor", "Mentor", "Life Coach", "Volunteer",
                      "Mail Carrier", "Career Counselor", "Pastor", "Troubled Teens Mentor", "Motivational Speaker",
                      "Housing Case Manager", "Non-Profit Fundraiser", "Charity Organizer", "Professional Speaker",
                      "Postal Worker", "Homeless Shelter Manager", "YMCA Program Director", "Career Consultant",
-                     "Keynote Speaker/Social Entrepreneur", "Life Coach/Speaker/Yoga Teacher")
+                     "Keynote Speaker/Social Entrepreneur", "Life Coach/Speaker/Yoga Teacher", "Missionary Recruiter")
                       
    ~ "Community & Social Services",
     
@@ -395,17 +393,20 @@ categorize_profession <- function(profession) {
                       "Cook", "Food Truck Operator", "Restaurant Manager", "Barista", "Waitress", "Coffee Barista", 
                       "Waitress/Bartender", "Personal Chef", "Flight Attendant", "Restaurant Designer", 
                       "Cocktail Waitress/Graphic Designer", "Bellhop", "Kitchen Staff Member", "Bar Manager",
-                      "Club Promoter") 
-   ~ "Food & Hospitality",
+                      "Club Promoter", "Airline Agent", "Customer Service Representative", "Grocery Clerk", 
+                      "Ice Cream Entrepreneur", "Ice Cream Scooper", "Merchandiser", "Produce Clerk", "Retail Buyer") 
+   ~ "Food, Hospitality, & Retail",
     
     profession %in% c("Farmer", "Rancher", "Fisherman", "Gardener", "Beekeeper", "Wilderness Guide", 
                       "Hunting Guide", "Conservationist", "Park Ranger", "Commercial Fisherman", "Dairy Farmer",
                       "River Rafting Guide", "Teacher/Farmer", "Goat Farmer", "Nature Guide", "Fishing Boat Captain",
                       "Children's Adventure Guide", "Scoutmaster", "Sheep Farmer", "Chicken Farmer", "Hiking Guide",
                       "Cattle Rancher", "Goat Rancher", "Post Office Manager/Farmer", "River Guide", 
-                      "Wilderness Therapy Guide", "Fisherwoman", "Fishing Guide", "Fishmonnger") 
+                      "Wilderness Therapy Guide", "Fisherwoman", "Fishing Guide", "Fishmonnger", "Dolphin Trainer",
+                      "Zookeeper", "Dog Trainer","Horse Trainer", "Marine Animal Trainer", "Veterinarian", "Pet Cremator",
+                      "Paddleboard Company Owner", "Beach Service Company Owner", "Barrel Racer", "Bounty Hunter") 
                       
-   ~ "Agriculture & Outdoors",
+   ~ "Agriculture, Outdoors, & Animal Care",
     
     profession %in% c("Software Developer", "Engineer", "Technology Executive", "IT Manager", "Cybersecurity Analyst", 
                       "App Developer", "Internet Projects Manager", "UX Designer", "Robotics Scientist",
@@ -414,19 +415,6 @@ categorize_profession <- function(profession) {
                       "Internet Technology Director", "Computer Engineer", "Engineer Graduate/Model", "Nuclear Engineer",
                       "Yahoo! Executive", "Quantitative Strategist", "Internet Project Manager", "Industrial Engineer") 
    ~ "Technology & Engineering",
-   
-    profession %in% c("Business Owner", "Entrepreneur", "Small Business Owner", "Franchise Owner", 
-                      "Bowling Alley Owner", "Oil Company Owner", "Pest Control Company Owner", 
-                      "Paddleboard Company Owner", "Bridal Shop Owner", "Cigar Lounge Owner", 
-                      "Model/Spray Tan Business Owner", "Competitive Cheerleading Gym Owner", "Furniture Company Owner",
-                      "Sideline Chic Owner", "Beach Service Company Owner")
-   ~ "Business Owner",
-   
-   profession %in% c("Homemaker", "Nanny", "Single Mother", "Caretaker", "Stay-at-Home Mom",
-                     "Stay-at-Home Dad") ~ "Caretaker",
-   profession %in% c("Dolphin Trainer", "Zookeeper", "Dog Trainer","Horse Trainer", "Marine Animal Trainer",
-                     "Veterinarian", "Pet Cremator") 
-   ~ "Animal Care",
 
     
     # If it doesn’t fit into any category above, categorize as "Other"
@@ -441,14 +429,217 @@ contestant_data3 <- contestant_data3 %>%
 
 # Apply the categorization function to the 'profession' column
 contestant_data3$job_category <- sapply(contestant_data3$job_category, categorize_profession)
+
+contestant_data3 %>% filter(job_category=="Other") %>% group_by(profession) %>% summarise(total=n()) %>% arrange(desc(total))
 ```
 
 ```{r}
+# grouping Evvie into the female category because of how they were percieved on the show
+contestant_data3 <- contestant_data3 %>%
+  mutate(
+    gender = case_when(
+      gender == "F" ~ "F",
+      gender == "N" ~ "F",
+      gender == "M" ~ "M"
+    )
+  ) 
+```
+
+```{r}
+x <- contestant_data3 %>%
+  group_by(job_category) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  )%>%
+  arrange((mean_finish))
+
+ggplot(x, aes(x = reorder(job_category, mean_finish), y = mean_finish, fill = job_category)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  coord_flip() + 
+  labs(
+    x = "Job Category",
+    y = "Mean Finish",
+    title = "Mean Finish by Job Category"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+```
+
+```{r}
+contestant_data3 %>%
+  group_by(age) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  )%>%
+  arrange(desc(age)) %>%
+  ggplot(aes(x = age, y = mean_finish)) +
+  geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "Age",
+    y = "Mean Finish",
+    title = "Mean Finish by Age"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+```
+
+```{r}
+contestant_data3 %>%
+  group_by(gender) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  ) %>%
+  ggplot(aes(x = gender, y = mean_finish, fill=gender)) +
+  geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "Gender",
+    y = "Mean Finish",
+    title = "Mean Finish by Gender"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+```
+
+```{r}
+contestant_data3 %>%
+  group_by(poc) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  ) %>%
+  ggplot(aes(x = as.factor(poc), y = mean_finish, fill=as.factor(poc))) +
+  geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "POC",
+    y = "Mean Finish",
+    title = "Mean Finish by POC"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+
+contestant_data3 %>%
+  group_by(poc, gender) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  ) %>%
+  ggplot(aes(x = as.factor(gender), y = mean_finish, fill=as.factor(poc))) +
+  geom_bar(stat = "identity", position = "dodge")+  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "POC",
+    y = "Mean Finish",
+    title = "Mean Finish by POC"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+
 
 ```
 
+```{r}
+contestant_data3 %>%
+  mutate(
+    poc = case_when(poc==1 ~ "POC", poc == 0 ~ "White"),
+    lgbt = case_when(lgbt == 1 ~ "LGBT", lgbt == 0 ~ "Straight")
+  ) %>%
+  group_by(gender, poc, lgbt) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  ) %>% # Plot with ggplot, faceting by gender, poc, and lgbt
+ggplot(aes(x = poc, y = mean_finish, fill = lgbt)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    x = "Groups (Gender, POC, LGBT)",
+    y = "Mean Finish",
+    title = "Mean Finish by Gender, POC, and LGBT"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() +  # Clean theme
+  facet_wrap(~gender, scales = "free_x")  # Facet by the three variables
 
+```
+> I could try to cluster to see if i can recover these groups
 
+```{r}
+contestant_data3 <- contestant_data3 %>%
+  mutate(
+    region = case_when(
+      state %in% c("Connecticut", "D.C.", "Delaware", "District of Columbia", 
+                  "Maryland", "Massachusetts", "New Jersey", "New York", "Rhode Island",
+                  "New Hampshire", "Vermont", "Maine", "Pennsylvania", "Washington DC") ~ "Northeast",
+      
+    state %in% c("Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", 
+                 "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", 
+                 "Wisconsin") ~ "Midwest",
+    
+    state %in% c("Alabama", "Arkansas", "Kentucky", "Louisiana", "Mississippi", 
+                 "Oklahoma", "Tennessee", "Texas", "Florida", "Georgia", 
+                 "North Carolina", "South Carolina", "Virginia", "West Virginia") ~ "South",
+    
+    state %in% c("Arizona", "California", "Colorado", "Hawaii", "Idaho", "Montana", 
+                 "Nevada", "New Mexico", "Oregon", "Utah", "Washington", "Wyoming") ~ "West",
+    
+    state %in% c("Ontario", "Quebec") ~ "Canada",
+    )
+  )
+
+contestant_data3 %>%
+  group_by(region) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  ) %>% arrange(mean_finish) %>%
+  ggplot(aes(x = region, y = mean_finish, fill=region)) +
+  geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "POC",
+    y = "Mean Finish",
+    title = "Mean Finish by POC"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+
+list(table(contestant_data3$state))
+```
+
+> this graph looks nice but its misleading bc canada only has 4 people -- idk if its appropriate to drop them or add them to a different section
+
+```{r}
+contestant_data3 %>%
+  group_by(finish) %>%
+  summarise(
+    mean_win_percentage = sum(win_percentange)/n()
+  ) %>%
+  ggplot(aes(x = finish, y = mean_win_percentage, fill = finish)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$win_percentange), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "Finish",
+    y = "Mean Win Percentage",
+    title = "Mean Win Percentage by Finish"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+
+mean(contestant_data3$win_percentange)
+```
 
 headshots -- using their faces to predict how long they last in the season -- can attractiveness predict how long you stay in the game
 
