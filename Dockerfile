@@ -10,7 +10,7 @@ RUN apt update && apt install -y \
     manpages \
     && rm -rf /var/lib/apt/lists/*
     
-RUN R -e "install.packages('tidyverse')"
+RUN R -e "install.packages('tidyverse', 'survivoR')"
 
 # Expose the default RStudio port
 EXPOSE 8787
