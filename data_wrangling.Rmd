@@ -38,39 +38,7 @@ contestant_data %>%
   group_by(state) %>%
   tally()%>% arrange(desc(n))
 ```
-I think the profession needs to be tidied:
-Okay what can i combine?
-- Teacher: 4th Grade Teacher, Art Teacher, Elementary Teacher, English Teacher, Gym Teacher, high school teacher
-- Professor: English Professor, English professor
-- Actor: Actor, Actress, Aspiring Actress, former tv teen star
-- Veteran: Air Force Veteran, Army Veteran, Iraq War Veteran, marine
-- Student: Art Student, Business Student, College Student, Cosmetology Student, Crossfit Coach/Physical Therapy Student. Dental Student, Economics Student, full-time student/sales, grad student, graduate student, harvard law student, high school student, Ivy League Student, law school student, law student, law studnet/former military, mba student, medical student
-- Career Consultant + Career Counselor
-- Coach: Baseball/Dating Coach, Basketball Coach, Cheerleading Coach, Crossfit Trainer, Crossfit Coach/Project Coordinator, fitness instructor, former nfl coach, gymnastics coach, hiking guide, life coach/speaker/yoga teacher, navy swim instructro
-- Gym Owner: Competitive Cheerleading Gym Owner, gym owner
-- Attorney: Attorney + Civil Rights Attorney + Defense Attorney, Deputy District Attorney, Divorce Attorney, Attorney/Former NFL Player + Attorney/Retired NFL Player
-- Barista: Barista + Coffee Barista
-- Computer Programmer: Computer Programmer + Computer Engineer
-- Construction: Construction Company Vice President, Construction Supervisor, Construction Worker, highway construction
-- Designer + Aspiring Designer
-- Doctor: Doctor, ER Doctor
-- Entertainment Host + Writer: Entertainment Host and Writer, Entertainment Host/Writer
-- Firefighter: Firefighter, Fireman/EMT
-- Fisher: fisherwoman, fishing boat captain, fishing guide, fishmonnger
-- Pro Athlete: former nba all-star, former nba player, former mlb player, former mfl quarterback, former nhl player,former professional cyclist, former pro cyclist/shop manager, mixed martial arts fighter, nfl player
-- writer: aspiring writer, freelance writer
-- farmer: goat farmer, farmer, goat racher
-- sales: elevator salesman, graphic saleswoman, insurance saleswoman
-- Hairdresser: hairdresser, hairsytlist
-- Singer: country music signer, former pop star, heavy metal musican
-- Animal Trainer: horse trainer, dolphin trainer, dog trainer
-- Internet Project Manager: Internet Projects Manager, Internet Project Manager
-- Jewelry: Jeweler, Jewelry Designer, Jewelry Salesman/Photographer
-- lifeguard: lifeguard + former lifeguard
 
-
-** i stiopped on page 32 -- idk if i want to keep doing this
-** note:  Cheif Lifegaurd, industrial engineer
 
 ```{r}
 ## winners
@@ -199,7 +167,7 @@ challenge_wins <- challenge_data %>%
 
 contestant_data <- contestant_data %>%
   mutate(
-    win_percentange = challenge_wins$win_percentage,
+    win_percentage = challenge_wins$win_percentage,
     castaway_id = challenge_wins$castaway_id
   )
 ```
@@ -245,7 +213,8 @@ contestant_data3 <- contestant_data2 %>%
          success = case_when( # boolean for successfully playing advantage
            num_success > 0 ~ 1,
            num_success == 0 ~ 0
-         ))
+         ),
+         advantage_success_rate = replace_na(advantage_success_rate, 0))
 ```
 
 ```{r}
@@ -434,6 +403,7 @@ contestant_data3$job_category <- sapply(contestant_data3$job_category, categoriz
 contestant_data3 %>% filter(job_category=="Other") %>% group_by(profession) %>% summarise(total=n()) %>% arrange(desc(total))
 ```
 
+
 ```{r}
 # grouping Evvie into the female category because of how they were percieved on the show
 contestant_data3 <- contestant_data3 %>%
@@ -442,6 +412,12 @@ contestant_data3 <- contestant_data3 %>%
       gender == "F" ~ "F",
       gender == "N" ~ "F",
       gender == "M" ~ "M"
+    ),
+    race = case_when(
+      poc == 0 ~ "White",
+      african_american == 1 ~ "Black",
+      asian_american == 1 ~ "Asian",
+      latin_american == 1 ~ "Latin American"
     )
   ) 
 ```
@@ -530,12 +506,12 @@ contestant_data3 %>%
   theme_minimal() # Clean theme
 
 contestant_data3 %>%
-  group_by(poc, gender) %>%
+  group_by(race, gender) %>%
   summarise(
     mean_finish = sum(finish)/n(),
     total = n()
   ) %>%
-  ggplot(aes(x = as.factor(gender), y = mean_finish, fill=as.factor(poc))) +
+  ggplot(aes(x = as.factor(gender), y = mean_finish, fill=as.factor(race))) +
   geom_bar(stat = "identity", position = "dodge")+  # Use stat = "identity" for pre-calculated values
   geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
@@ -556,18 +532,41 @@ contestant_data3 %>%
     poc = case_when(poc==1 ~ "POC", poc == 0 ~ "White"),
     lgbt = case_when(lgbt == 1 ~ "LGBT", lgbt == 0 ~ "Straight")
   ) %>%
-  group_by(gender, poc, lgbt) %>%
+  group_by(gender, race, lgbt) %>%
   summarise(
     mean_finish = sum(finish)/n(),
     total = n()
   ) %>% # Plot with ggplot, faceting by gender, poc, and lgbt
-ggplot(aes(x = poc, y = mean_finish, fill = lgbt)) +
+ggplot(aes(x = lgbt, y = mean_finish, fill = race)) +
   geom_bar(stat = "identity", position = "dodge") +
   labs(
     x = "Groups (Gender, POC, LGBT)",
     y = "Mean Finish",
     title = "Mean Finish by Gender, POC, and LGBT"
   ) +
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() +  # Clean theme
+  facet_wrap(~gender, scales = "free_x")  # Facet by the three variables
+
+contestant_data3 %>%
+  mutate(
+    poc = case_when(poc==1 ~ "POC", poc == 0 ~ "White"),
+    lgbt = case_when(lgbt == 1 ~ "LGBT", lgbt == 0 ~ "Straight")
+  ) %>%
+  group_by(gender, poc, lgbt) %>%
+  summarise(
+    mean_finish = sum(finish)/n(),
+    total = n()
+  ) %>% # Plot with ggplot, faceting by gender, poc, and lgbt
+ggplot(aes(x = lgbt, y = mean_finish, fill = poc)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    x = "Groups (Gender, POC, LGBT)",
+    y = "Mean Finish",
+    title = "Mean Finish by Gender, POC, and LGBT"
+  ) +
+  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() +  # Clean theme
   facet_wrap(~gender, scales = "free_x")  # Facet by the three variables
@@ -609,9 +608,9 @@ contestant_data3 %>%
   geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
-    x = "POC",
+    x = "Region",
     y = "Mean Finish",
-    title = "Mean Finish by POC"
+    title = "Mean Finish by Region"
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() # Clean theme
@@ -625,11 +624,11 @@ list(table(contestant_data3$state))
 contestant_data3 %>%
   group_by(finish) %>%
   summarise(
-    mean_win_percentage = sum(win_percentange)/n()
+    mean_win_percentage = sum(win_percentage)/n()
   ) %>%
   ggplot(aes(x = finish, y = mean_win_percentage, fill = finish)) +
   geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$win_percentange), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data3$win_percentage), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "Finish",
@@ -639,8 +638,58 @@ contestant_data3 %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() # Clean theme
 
-mean(contestant_data3$win_percentange)
+mean(contestant_data3$win_percentage)
 ```
 
 headshots -- using their faces to predict how long they last in the season -- can attractiveness predict how long you stay in the game
+
+## PCA, Clustering 
+
+```{r}
+model_data <- contestant_data3 %>%
+  select(age, gender, poc, jewish, muslim, lgbt, num_appearance, 
+         votes_against, win_percentange, num_advantages, advantage_success_rate) %>%
+  mutate(gender = case_when(
+    gender == "M" ~ 0,
+    gender == "F" ~ 1
+  )) %>%
+  mutate(across(where(is.factor), ~ as.numeric(as.character(.))))
+
+pca_data <- model_data  %>% as.matrix()
+
+pca_result <- prcomp(model_data %>% as.matrix(), scale. = TRUE)
+pcs <- pca_result$x %>% 
+  as_tibble() %>% 
+  select(PC1, PC2, PC3)
+
+data_with_pcs <- contestant_data3 %>%
+  mutate(
+    PC1 = pcs$PC1,
+    PC2 = pcs$PC2,
+    PC3 = pcs$PC3
+  )
+
+ggplot(data_with_pcs, aes(PC1, PC2)) + geom_point(aes(color=(poc)))
+
+## poc, gender (pc2 - and pc1??), advantage, success, num_season pc1
+# the 4 points in the bottom right corner are all muslim contestants 
+```
+
+```{r}
+kmeans_results <- kmeans(model_data, 3)
+
+data_with_pcs <- data_with_pcs %>%
+  mutate(
+    cluster = kmeans_results$cluster
+  )
+
+ggplot(data_with_pcs, aes(PC1, PC2)) + geom_point(aes(color=factor(cluster)))
+
+```
+
+Next -- I should run a logistic regression or a random forest to see how well the model can predict how far a contestant will make it. make sure to split into train and test
+
+
+Also it would probs be good to start separating this file into different R scripts for the Makefile
+
 
