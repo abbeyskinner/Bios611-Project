@@ -18,7 +18,7 @@ tribe_data <- read_csv("/home/rstudio/work/data/survivor/tribe_table.csv")
 
 I think I'll def use contestant_data and maybe season_data too but not sure about tribe_data
 
-```{r}
+```{r, looking at the data}
 ## probably should look at proportions for most of these 
 ggplot(contestant_data, aes(x=age)) +
   geom_histogram()
@@ -40,7 +40,7 @@ contestant_data %>%
 ```
 
 
-```{r}
+```{r, winners and looking at graphs}
 ## winners
 contestant_data %>%
   filter(finish==1) %>%
@@ -66,7 +66,7 @@ contestant_data %>%
 
 ```
 
-```{r}
+```{r, first voted out}
 ## first voted out
 contestant_data %>%
   filter(
@@ -99,7 +99,7 @@ contestant_data %>%
   geom_bar()
 ```
 
-```{r}
+```{r, made the merge}
 # made the merge
 contestant_data %>%
   filter(merge==1) %>%
@@ -123,7 +123,7 @@ What types of people win? What types of people make final tribal (+ dont win?) W
 
 ** okay wait... apparently there is an R package called `survivoR` that has data on different things of each season!!!! Im gunna go through them now:
 
-```{r}
+```{r, looking at the difference surivioR datasets}
 advantage_details
 advantage_data <- advantage_movement
 castaways
@@ -140,7 +140,7 @@ vote_history
 confessional_data <- confessionals
 ```
 
-```{r}
+```{r, win percentage}
 challenge_data <- challenge_results %>%
  filter(version =="US",
         season <= 43) 
@@ -157,25 +157,24 @@ challenge_wins <- challenge_data %>%
   group_by(castaway_id, season) %>%
   summarise(
     total_challenges_competed = n(),
-    total_won = sum(result),
-    total_sit_outs = sum(sit_out)
+    total_won = sum(result)
   ) %>%
   mutate(
-    win_percentage = total_won/(total_challenges_competed - total_sit_outs)
+    win_percentage = total_won/(total_challenges_competed)
   ) %>%
   arrange(season)
 
 contestant_data <- contestant_data %>%
   mutate(
     win_percentage = challenge_wins$win_percentage,
-    castaway_id = challenge_wins$castaway_id
+    castaway_id = challenge_data$castaway_id
   )
 ```
 
 
 Okay... plan of action -- this is too much data and its overwhelming so I'm gunna stick with what I have except I want to add win percentage. So i can calculate the win percentages and then filter that data so that it matches with the data I have (bc i only have until season 43 i think -- or I can add the contestants that I'm missing bc I do have all their info). Then i can merge it into my contestant dataset so I can see how win percentage plays a part in your overall play. If im feeling up to it i could also go through the advantage data and make a boolean for if a contestant found an advantage (and if they used it -- used it correctly -- and number of advantages found)
 
-```{r}
+```{r, advantages}
 advantage_data <- advantage_movement %>%
   filter(version == "US",
         season <= 43)
@@ -217,7 +216,7 @@ contestant_data3 <- contestant_data2 %>%
          advantage_success_rate = replace_na(advantage_success_rate, 0))
 ```
 
-```{r}
+```{r, job categories}
 ## Professions
 
 # Create a function to categorize professions
@@ -404,7 +403,7 @@ contestant_data3 %>% filter(job_category=="Other") %>% group_by(profession) %>% 
 ```
 
 
-```{r}
+```{r, evvie}
 # grouping Evvie into the female category because of how they were percieved on the show
 contestant_data3 <- contestant_data3 %>%
   mutate(
@@ -422,7 +421,7 @@ contestant_data3 <- contestant_data3 %>%
   ) 
 ```
 
-```{r}
+```{r, figure of mean finish by job cat}
 x <- contestant_data3 %>%
   group_by(job_category) %>%
   summarise(
@@ -445,7 +444,7 @@ ggplot(x, aes(x = reorder(job_category, mean_finish), y = mean_finish, fill = jo
   theme_minimal() # Clean theme
 ```
 
-```{r}
+```{r, figure of mean finihs by age}
 contestant_data3 %>%
   group_by(age) %>%
   summarise(
@@ -466,7 +465,7 @@ contestant_data3 %>%
   theme_minimal() # Clean theme
 ```
 
-```{r}
+```{r, figure of mean finish by gender}
 contestant_data3 %>%
   group_by(gender) %>%
   summarise(
@@ -484,18 +483,36 @@ contestant_data3 %>%
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() # Clean theme
+
+contestant_data3 %>%
+  group_by(gender) %>%
+  summarise(
+    mean_finish = sum(normalized_finish)/n(),
+    total = n()
+  ) %>%
+  ggplot(aes(x = gender, y = mean_finish, fill=gender)) +
+  geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data3$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "Gender",
+    y = "Mean Finish",
+    title = "Mean Finish by Gender"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
 ```
 
-```{r}
+```{r, figure of mean finish by gender, race}
 contestant_data3 %>%
   group_by(poc) %>%
   summarise(
-    mean_finish = sum(finish)/n(),
+    mean_finish = sum(normalized_finish)/n(),
     total = n()
   ) %>%
-  ggplot(aes(x = as.factor(poc), y = mean_finish, fill=as.factor(poc))) +
+  ggplot(aes(x = as.factor(poc), y = mean_finish)) +
   geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data3$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "POC",
@@ -508,15 +525,15 @@ contestant_data3 %>%
 contestant_data3 %>%
   group_by(race, gender) %>%
   summarise(
-    mean_finish = sum(finish)/n(),
+    mean_finish = sum(normalized_finish/n()),
     total = n()
   ) %>%
   ggplot(aes(x = as.factor(gender), y = mean_finish, fill=as.factor(race))) +
   geom_bar(stat = "identity", position = "dodge")+  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data3$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
-    x = "POC",
+    x = "Gender",
     y = "Mean Finish",
     title = "Mean Finish by POC"
   ) +
@@ -526,7 +543,7 @@ contestant_data3 %>%
 
 ```
 
-```{r}
+```{r, figure of mean finish by poc/race, gender, lgbt}
 contestant_data3 %>%
   mutate(
     poc = case_when(poc==1 ~ "POC", poc == 0 ~ "White"),
@@ -574,13 +591,14 @@ ggplot(aes(x = lgbt, y = mean_finish, fill = poc)) +
 ```
 > I could try to cluster to see if i can recover these groups
 
-```{r}
+```{r, region}
 contestant_data3 <- contestant_data3 %>%
   mutate(
     region = case_when(
       state %in% c("Connecticut", "D.C.", "Delaware", "District of Columbia", 
                   "Maryland", "Massachusetts", "New Jersey", "New York", "Rhode Island",
-                  "New Hampshire", "Vermont", "Maine", "Pennsylvania", "Washington DC") ~ "Northeast",
+                  "New Hampshire", "Vermont", "Maine", "Pennsylvania", "Washington DC",
+                  "Ontario", "Quebec") ~ "Northeast",
       
     state %in% c("Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", 
                  "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", 
@@ -591,12 +609,12 @@ contestant_data3 <- contestant_data3 %>%
                  "North Carolina", "South Carolina", "Virginia", "West Virginia") ~ "South",
     
     state %in% c("Arizona", "California", "Colorado", "Hawaii", "Idaho", "Montana", 
-                 "Nevada", "New Mexico", "Oregon", "Utah", "Washington", "Wyoming") ~ "West",
-    
-    state %in% c("Ontario", "Quebec") ~ "Canada",
+                 "Nevada", "New Mexico", "Oregon", "Utah", "Washington", "Wyoming") ~ "West"
     )
   )
+```
 
+```{r, mean finish by region}
 contestant_data3 %>%
   group_by(region) %>%
   summarise(
@@ -620,15 +638,15 @@ list(table(contestant_data3$state))
 
 > this graph looks nice but its misleading bc canada only has 4 people -- idk if its appropriate to drop them or add them to a different section
 
-```{r}
+```{r, figure of mean win percentage by finish}
 contestant_data3 %>%
   group_by(finish) %>%
   summarise(
-    mean_win_percentage = sum(win_percentage)/n()
+    mean_win_percentage = sum(win_percentange)/n()
   ) %>%
   ggplot(aes(x = finish, y = mean_win_percentage, fill = finish)) +
   geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$win_percentage), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data3$win_percentange), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "Finish",
@@ -637,12 +655,9 @@ contestant_data3 %>%
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() # Clean theme
-
-mean(contestant_data3$win_percentage)
 ```
 
 headshots -- using their faces to predict how long they last in the season -- can attractiveness predict how long you stay in the game
-
 ## PCA, Clustering 
 
 ```{r}
@@ -660,7 +675,10 @@ pca_data <- model_data  %>% as.matrix()
 pca_result <- prcomp(model_data %>% as.matrix(), scale. = TRUE)
 pcs <- pca_result$x %>% 
   as_tibble() %>% 
-  select(PC1, PC2, PC3)
+  select(PC1, PC2, PC3, PC4, PC5, PC6) %>%
+  mutate(
+    finish = contestant_data3$finish
+  )
 
 data_with_pcs <- contestant_data3 %>%
   mutate(
@@ -690,6 +708,212 @@ ggplot(data_with_pcs, aes(PC1, PC2)) + geom_point(aes(color=factor(cluster)))
 Next -- I should run a logistic regression or a random forest to see how well the model can predict how far a contestant will make it. make sure to split into train and test
 
 
+```{r}
+model1 <- lm(data = contestant_data3, finish ~ age + gender + poc + lgbt +
+               num_appearance + win_percentange + advantage + success + job_category)
+summary(model1)
+plot(model1)
+
+set.seed(220)
+train_data <- contestant_data3 %>% sample_frac(0.7)
+test_data <- setdiff(contestant_data3, train_data)
+
+model <- lm(data = train_data, finish ~ age + gender + poc + lgbt +
+               num_appearance + win_percentange + advantage + success + job_category)
+summary(model)
+plot(model)
+
+pred_vals <- predict(model, test_data) %>% as.tibble()
+
+plot(pred_vals, test_data$finish)
+
+
+model$fitted.values
+
+```
+
+```{r}
+# Filter and clean data for regression
+regression_data <- contestant_data3 %>%
+  select(normalized_finish, age, gender, race, region, job_category, 
+         win_percentange, num_advantages, advantage_success_rate, num_appearance)
+
+# Convert categorical variables to factors
+regression_data <- regression_data %>%
+  mutate(
+    gender = as.factor(gender),
+    race = as.factor(race),
+    region = as.factor(region),
+    job_category = as.factor(job_category)
+  )
+
+finish_model <- lm(normalized_finish ~ age + gender + race + region + job_category + 
+                      win_percentange + num_advantages + advantage_success_rate + num_appearance, 
+                      data = regression_data)
+
+# Summarize the model
+summary(finish_model)
+
+plot(finish_model)
+
+
+```
+
+```{r}
+library(forcats)
+ggplot(contestant_data3, aes(x = fct_reorder(job_category, normalized_finish, .fun = median), 
+                            y = normalized_finish, fill = job_category)) +
+    geom_boxplot(outlier.color = "red", alpha = 0.8) +
+    coord_flip() +
+    labs(title = "Survivor Placement Percentile by Job Category",
+         x = "Job Category",
+         y = "Placement Percentile") +
+    theme_minimal() +
+    geom_hline(yintercept = mean(contestant_data3$normalized_finish), 
+               color = "red", size = 1) +  # Add  line at overall mean
+    theme(legend.position = "none") # Hide legend for cleaner visualization
+
+
+contestant_data3 %>%
+  mutate(
+    gender_race = paste(gender, race, sep = " + ")  # Create a combined variable
+  ) %>%
+  # group_by(gender_race) %>%
+  # summarise(
+  #   mean_finish = mean(normalized_finish, na.rm = TRUE),
+  #   total = n()
+  # ) %>%
+  ggplot(aes(x = reorder(gender_race, normalized_finish), y = normalized_finish, fill = gender)) +
+  geom_boxplot(alpha = 0.8) +  # Use bar plot with calculated means
+  geom_hline(yintercept = mean(contestant_data3$normalized_finish, na.rm = TRUE), 
+             color = "red", size = 1) +  # Add overall mean line
+  labs(
+    title = "Mean Finish by Gender and Race",
+    x = "Gender + Race",
+    y = "Mean Finish"
+  ) +
+  theme_minimal() +
+  coord_flip() +  # Flip the axes for better readability
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels
+    legend.position = "none"  # Remove legend for clarity
+  )
+```
+
+
 Also it would probs be good to start separating this file into different R scripts for the Makefile
+
+```{r}
+contestant_data3 %>%
+  group_by(job_category) %>%
+  summarise(mean_win_percentage = mean(win_percentange, na.rm = TRUE)) %>%
+  ggplot(aes(x = reorder(job_category, mean_win_percentage), y = mean_win_percentage)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  geom_hline(yintercept = mean(contestant_data3$win_percentange), color = "red", size = 1) +  # Add  line at overall mean
+  labs(title = "Average Win Percentage by Job Category", x = "Job Category", y = "Win Percentage")
+```
+
+```{r}
+contestant_data3 %>% filter(advantage == 1) %>%
+  group_by(job_category) %>%
+  summarise(
+    n = n(),
+    avg_success_rate = mean(advantage_success_rate, na.rm = TRUE)
+  ) %>%
+ ggplot(aes(x = reorder(job_category, avg_success_rate), y = avg_success_rate)) +
+  geom_bar(stat = "identity", position = "dodge", fill = "skyblue") +
+  coord_flip() +
+  geom_hline(yintercept = mean((contestant_data3 %>% filter(advantage == 1))$advantage_success_rate), 
+             color = "red", size = 1) +  # Add  line at overall mean
+  labs(title = "Advantage Success Rate by Job Category", x = "Gender", y = "Average Value")
+
+
+contestant_data3 %>%
+  ggplot(aes(x = region, y = normalized_finish, fill = region)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Placement Distribution by Region", x = "Region", y = "Placement Percentile") +
+  theme_minimal()
+```
+
+```{r}
+## this graph is good -- not sure if i will use anything else 
+contestant_data3 %>%
+  group_by(num_season) %>%
+  summarise(
+    pct_poc = mean(race != "White", na.rm = TRUE) * 100,
+    pct_queer = mean(lgbt == 1, na.rm = TRUE) * 100
+  ) %>%
+  pivot_longer(cols = c(pct_poc, pct_queer), names_to = "Group", values_to = "Percentage") %>%
+  ggplot(aes(x = num_season, y = Percentage, color = Group)) +
+  geom_line(size = 1) +
+  labs(title = "Diversity Representation Over Seasons", x = "Season", y = "Percentage", color = "Group")
+
+contestant_data3 %>%
+  group_by(num_season) %>%
+  filter(ftc == 1) %>%
+  summarise(
+    pct_poc = mean(race != "White", na.rm = TRUE) * 100,
+    pct_queer = mean(lgbt == 1, na.rm = TRUE) * 100
+  ) %>%
+  pivot_longer(cols = c(pct_poc, pct_queer), names_to = "Group", values_to = "Percentage") %>%
+  ggplot(aes(x = num_season, y = Percentage, color = Group)) +
+  geom_line(size = 1) +
+  labs(title = "Diversity Representation of FTC Over Seasons", x = "Season", y = "Percentage", color = "Group")
+
+
+mean((contestant_data3 %>%
+  group_by(num_season) %>%
+  summarise(
+    pct_poc = mean(race != "White", na.rm = TRUE)
+  ))$pct_poc)
+
+library(knitr)
+
+contestant_data3 %>%
+  filter(
+    finish==16 & num_season %in% c(1,2,3,4,5,6,7,12,15,18) |
+    finish==18 & num_season %in% c(8,9,11,17,22,23,24,25,28,29,30,32,35,38,41,42,43) |
+    finish==19 & num_season ==14 |
+    finish==20
+  ) %>%
+  group_by(gender, poc) %>%
+  summarise(
+    actual = n()
+  ) %>%
+  mutate(
+    expected = case_when(
+      poc == 0 ~ 42*(0.5)*(1-.2905175),
+      poc ==1 ~ 42*(0.50)*(.2905175)
+      )
+  ) %>%
+  pivot_longer(cols = c(actual, expected), names_to = "type", values_to = "value") %>%
+  pivot_wider(names_from = type, values_from = value) %>%
+  kable(caption = "Actual vs Expected Counts by Gender and POC Status")
+  
+  
+  
+  summarise(
+    poc_count = sum(poc == 1, na.rm = TRUE),          # Count of 1s in 'poc'
+    lgbt_count = sum(lgbt == 1, na.rm = TRUE),        # Count of 1s in 'lgbt'
+    male_count = sum(gender == "M", na.rm = TRUE),    # Count of 'M's in 'gender'
+    female_count = sum(gender == "F", na.rm = TRUE) 
+  )
+
+```
+
+```{r}
+contestant_data3 %>%
+  group_by(num_season) %>%
+  summarise(
+    pct_poc = mean(race != "White", na.rm = TRUE) * 100,
+    pct_queer = mean(lgbt == 1, na.rm = TRUE) * 100
+  ) %>%
+  pivot_longer(cols = c(pct_poc, pct_queer), names_to = "Group", values_to = "Percentage") %>%
+  ggplot(aes(x = num_season, y = Percentage, color = Group)) +
+  geom_line(size = 1) +
+  labs(title = "Diversity Representation Over Seasons", x = "Season", y = "Percentage", color = "Group")
+```
 
 
