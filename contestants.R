@@ -1,19 +1,51 @@
 library(tidyverse)
 library(survivoR)
 
-contestant_table <- read_csv("/home/rstudio/work/data/survivor/contestant_table.csv")
+contestants_all_seasons <- read_csv("derived_data/contestants_all_seasons.csv")
 challenge_data <- read_csv("derived_data/challenge_data.csv")
 advantages <- read_csv("derived_data/advantages.csv")
 advantages_success <- read_csv("derived_data/advantages_success.csv")
+confessional_data <- read_csv("derived_data/confessional_data.csv")
 source("/home/rstudio/work/job_category.R")
 
-contestant_data <- contestant_table %>%
+contestant_data <- contestants_all_seasons %>%
   
   ## adding win percentage
   mutate(
     win_percentage = challenge_data$win_percentage,
     castaway_id = challenge_data$castaway_id
   ) %>%
+
+  ## adding personality type
+  left_join(
+    castaway_details %>%
+      filter(substr(castaway_id, 1, 2) == "US") %>%
+      select(castaway_id, personality_type),
+    by = "castaway_id"
+  ) %>%
+  mutate(
+    mb_ei = case_when(
+      substr(personality_type, 1, 1) == "E" ~ "Extraversion",
+      substr(personality_type, 1, 1) == "I" ~ "Introversion",
+      TRUE ~ NA
+    ),
+    mb_sn = case_when(
+      substr(personality_type, 2, 2) == "S" ~ "Sensing",
+      substr(personality_type, 2, 2) == "N" ~ "Intuition",
+      TRUE ~ NA
+    ),
+    mb_tf = case_when(
+      substr(personality_type, 3, 3) == "T" ~ "Thinking",
+      substr(personality_type, 3, 3) == "F" ~ "Feeling",
+      TRUE ~ NA
+    ),
+    mb_jp = case_when(
+      substr(personality_type, 4, 4) == "J" ~ "Judging",
+      substr(personality_type, 4, 4) == "P" ~ "Perceiving",
+      TRUE ~ NA
+    )
+  ) %>%
+
   
   ## adding advantage info
   left_join(advantages , by = c("castaway_id", "num_season")) %>%
@@ -55,19 +87,26 @@ contestant_data <- contestant_table %>%
       state %in% c("Connecticut", "D.C.", "Delaware", "District of Columbia", 
                    "Maryland", "Massachusetts", "New Jersey", "New York", "Rhode Island",
                    "New Hampshire", "Vermont", "Maine", "Pennsylvania", "Washington DC",
-                   "Ontario", "Quebec") ~ "Northeast",
+                   "Ontario", "Quebec", "Pensylvania") ~ "Northeast",
       
       state %in% c("Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", 
                    "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", 
-                   "Wisconsin") ~ "Midwest",
+                   "Wisconsin", "Saskatchewan") ~ "Midwest",
       
       state %in% c("Alabama", "Arkansas", "Kentucky", "Louisiana", "Mississippi", 
                    "Oklahoma", "Tennessee", "Texas", "Florida", "Georgia", 
-                   "North Carolina", "South Carolina", "Virginia", "West Virginia") ~ "South",
+                   "North Carolina", "South Carolina", "Virginia", "West Virginia",
+                   "Puerto Rico") ~ "South",
       
       state %in% c("Arizona", "California", "Colorado", "Hawaii", "Idaho", "Montana", 
-                   "Nevada", "New Mexico", "Oregon", "Utah", "Washington", "Wyoming") ~ "West"
+                   "Nevada", "New Mexico", "Oregon", "Utah", "Washington", "Wyoming",
+                   "Calafornia", "British Columbia") ~ "West"
     )
+  ) %>%
+  
+  ## adding confessional data
+  mutate(
+    confessionals_per_episode = confessional_data$confessionals_per_episode
   )
 
 

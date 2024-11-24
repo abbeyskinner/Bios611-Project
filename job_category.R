@@ -12,7 +12,7 @@ categorize_profession <- function(profession) {
                       "Dentist", "Mortician", "Nursing Practitioner", "Retired Nurse", "EMT/Pro Cheerleader",
                       "Physician/Army Orthopedic Surgery Resident", "Physical Therapist", "Neurosurgeon",
                       "Healthcare Worker", "Therapist", "Heart Valve Specialist", "Biochemist", "Chemical Disposal",
-                      "Chemist") 
+                      "Chemist", "Surgical Podiatrist", "Critical Care Nurse") 
     ~ "Healthcare & Science",
     
     profession %in% c("Real Estate Developer", "Real Estate Agent", "Real Estate Salesman", "Real State Agent",
@@ -33,7 +33,8 @@ categorize_profession <- function(profession) {
                       "English Professor", "Art Teacher", "Student Teacher", "College Admissions Director", 
                       "Education Project Manager", "School Lunch Lady", "4th Grade Teacher", "Bookkeeper",
                       "Physical Education Teacher", "Retired Teacher", "Guidance Counselor", "Physics Teacher",
-                      "English Profressor", "Special Education Teacher", "English professor", "Music Teacher") 
+                      "English Profressor", "Special Education Teacher", "English professor", "Music Teacher", 
+                      "Research Coordinator", "Elementary School Teacher", "Special Ed Teacher", "Science Teacher") 
     ~ "Education & Academia",
     
     profession %in% c("Sales Manager", "Marketing Director", "Advertising Executive", "Retail Salesperson", 
@@ -50,7 +51,7 @@ categorize_profession <- function(profession) {
                       "Jewelry Salesman/Photographer", "Social Media Manager", "Pharmaceutical Saleswoman", 
                       "Pharmaceutical Sales Representative", "Pharmaceutical Sales", "Medical Saleswoman", 
                       "Medical Marijuana Dispenser", "Healthcare Consultant", "Medical Sales Representative",
-                      "Pharmaceutical Representative", "Media Buyer") 
+                      "Pharmaceutical Representative", "Media Buyer", "Slot Machine Salesman", "Marketing Strategist") 
     ~ "Sales & Marketing",
     
     profession %in% c("Actor", "Actress", "Musician", "Singer", "Artist", "Writer", "Comedian", "Broadcaster", 
@@ -63,7 +64,7 @@ categorize_profession <- function(profession) {
                       "Comic Book Artist", "Singer/Actor/Writer", "Broadway Performer/Model/Aerialist",
                       "Ex-Talent Agent Assistant", "YouTube Sensation", "Entertainment Host/Writer", "Filmmaker", 
                       "Multimedia Artist", "Morning News Anchor", "Talent Manager", "Christian Radio Host", 
-                      "Host/Keynote Speaker")
+                      "Host/Keynote Speaker", "Content Producer")
     ~ "Arts, Entertainment & Media",
     
     profession %in% c("Model", "Swimsuit Model", "Pin-Up Model", "Fashion Director", "Footwear Designer",
@@ -72,7 +73,7 @@ categorize_profession <- function(profession) {
                       "Aspiring Designer", "T-shirt Designer", "Swimsuit Photographer", "Cosmetologist", "Designer",
                       "Former Miss Delaware", "Male Model", "Miss Kentucky Teen USA", "Furniture Designer",
                       "Interior Designer", "Model/Spray Tan Business Owner","Sideline Chic Owner", "Bridal Shop Owner",
-                      "Jeweler") 
+                      "Jeweler", "Barbershop Owner", "Salon Owner") 
     ~ "Fashion & Beauty",
     
     profession %in% c("Business Consultant", "Executive Recruiter", "Corporate Trainer", "Product Manager", 
@@ -83,7 +84,8 @@ categorize_profession <- function(profession) {
                       "Corporate Consultant", "Office Manager", "Banker", "Administrative Officer", "Accountant", 
                       "Corporate Executive", "Asset Manager", "Insurance Adjuster", "Business Analyst", "Case Manager",
                       "Product Management", "Educational Project Manager", "Project Manager", "Equity Research Assistant",
-                      "Business Owner", "Entrepreneur", "Small Business Owner", "Franchise Owner", "Hedge Fund Support") 
+                      "Business Owner", "Entrepreneur", "Small Business Owner", "Franchise Owner", "Hedge Fund Support",
+                      "Insurance Agent", "Investment Analyst", "Program Coordinator") 
     ~ "Finance & Business Management",
     
     profession %in% c("Lawyer", "District Attorney", "Defense Attorney", "Attorney", "Paralegal", "Judge", 
@@ -92,7 +94,7 @@ categorize_profession <- function(profession) {
                       "Law Clerk", "Crime Reporter", "Deputy District Attorney", "Expert Witness Locator", 
                       "Harvard Law Student", "Attorney/Retired NFL Player", "Assistant District Attorney", 
                       "Law Student/Former Military", "Divorce Attorney", "Personal Injury Attorney", 
-                      "Attorney/Former NFL Player") 
+                      "Attorney/Former NFL Player", "Estate Attorney") 
     ~ "Legal",
     
     profession %in% c("Electrician", "Plumber", "Carpenter", "Mechanic", "Technical Writer", 
@@ -110,7 +112,7 @@ categorize_profession <- function(profession) {
                       "Ex-Navy Fighter Pilot", "Drill Sergeant", "Retired Fire Captain", "Police Sergeant",
                       "U.S. Army Sergeant", "Iraq War Veteran", "Former Federal Agent?", "Retired NYPD Detective",
                       "Retired LAPD Officer", "Fireman/EMT", "State Trooper", "Former FBI Agent", "S.W.A.T. Officer", 
-                      "Air Force Veteran", "Retired Firefighter") 
+                      "Air Force Veteran", "Retired Firefighter", "Security Specialist") 
     ~ "Law Enforcement & Military",
     
     profession %in% c("Personal Trainer", "Fitness Instructor", "CrossFit Coach", "Triathlon Coach", 
@@ -128,14 +130,15 @@ categorize_profession <- function(profession) {
                       "Sailing Instructor", "Former NBA Player", "Bodybuilder", "Dietitian", "Snowboard Instructor",
                       "NFL Player", "Lifeguard", "Mixed Martial Arts Fighter", "Former NHL Player", "Olympic Medalist",
                       "Chief Lifeguard", "CrossFit Trainer", "Fitness Consultant", "Roller Girl", "Surf Instructor",
-                      "Competitive Cheerleading Gym Owner", "Miami Marlins President") 
+                      "Competitive Cheerleading Gym Owner", "Miami Marlins President", "Yogi", "College Coach") 
     ~ "Sports & Fitness",
     
     profession %in% c("Social Worker", "Youth Pastor", "Youth Mentor", "Mentor", "Life Coach", "Volunteer",
                       "Mail Carrier", "Career Counselor", "Pastor", "Troubled Teens Mentor", "Motivational Speaker",
                       "Housing Case Manager", "Non-Profit Fundraiser", "Charity Organizer", "Professional Speaker",
                       "Postal Worker", "Homeless Shelter Manager", "YMCA Program Director", "Career Consultant",
-                      "Keynote Speaker/Social Entrepreneur", "Life Coach/Speaker/Yoga Teacher", "Missionary Recruiter")
+                      "Keynote Speaker/Social Entrepreneur", "Life Coach/Speaker/Yoga Teacher", "Missionary Recruiter",
+                      "Charity Projects Manager", "Drug Counselor", "Parent Coach")
     
     ~ "Community & Social Services",
     
@@ -164,7 +167,9 @@ categorize_profession <- function(profession) {
                       "Data Scientist", "Cyber Security Analyst", "Software Publisher", "Rocket Scientist",
                       "Computer Projects Coordinator", "Computer Programmer", "Missile Engineer", "Web Producer",
                       "Internet Technology Director", "Computer Engineer", "Engineer Graduate/Model", "Nuclear Engineer",
-                      "Yahoo! Executive", "Quantitative Strategist", "Internet Project Manager", "Industrial Engineer") 
+                      "Yahoo! Executive", "Quantitative Strategist", "Internet Project Manager", "Industrial Engineer",
+                      "Tech Investor", "Security Software Engineer", "NASA Engineering Student", "Engineering Manager",
+                      "Aerospace Tech", "Software Engineer", "IT Quality Analyst", "Data Analyst") 
     ~ "Technology & Engineering",
     
     

@@ -3,8 +3,7 @@ library(survivoR)
 
 ## found advantage -- add number of advantages and boolean
 advantages <- advantage_movement %>%
-  filter(version == "US",
-         season <= 43) %>%
+  filter(version == "US") %>%
   filter(event %in% c("Found", "Found (beware)", "Received", "Recieved")) %>%
   mutate(num_season=season) %>%
   group_by(castaway_id, num_season) %>%
@@ -15,8 +14,7 @@ advantages <- advantage_movement %>%
 
 ## played advantaged successfully
 advantages_success <-  advantage_movement %>%
-  filter(version == "US",
-         season <= 43) %>%
+  filter(version == "US") %>%
   filter(event == "Played", success == "Yes") %>%
   mutate(num_season=season) %>%
   group_by(castaway_id, num_season) %>%

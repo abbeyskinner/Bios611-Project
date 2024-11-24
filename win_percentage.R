@@ -2,8 +2,7 @@ library(tidyverse)
 library(survivoR)
 
 challenge_data <- challenge_results %>%
-  filter(version =="US",
-         season <= 43)  %>%
+  filter(version =="US")  %>%
   mutate(
     result = case_when(
       result == "Won" ~ 1,
@@ -22,6 +21,4 @@ challenge_data <- challenge_results %>%
   ) %>%
   arrange(season)
 
-write_csv(challenge_data, "derived_data/challenge_data.csv");
-
-
+write_csv(challenge_data, "derived_data/challenge_data.csv")
