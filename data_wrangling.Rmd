@@ -422,7 +422,7 @@ contestant_data3 <- contestant_data3 %>%
 ```
 
 ```{r, figure of mean finish by job cat}
-x <- contestant_data3 %>%
+x <- contestant_data %>%
   group_by(job_category) %>%
   summarise(
     mean_finish = sum(finish)/n(),
@@ -432,7 +432,7 @@ x <- contestant_data3 %>%
 
 ggplot(x, aes(x = reorder(job_category, mean_finish), y = mean_finish, fill = job_category)) +
   geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   coord_flip() + 
   labs(
@@ -445,7 +445,7 @@ ggplot(x, aes(x = reorder(job_category, mean_finish), y = mean_finish, fill = jo
 ```
 
 ```{r, figure of mean finihs by age}
-contestant_data3 %>%
+contestant_data %>%
   group_by(age) %>%
   summarise(
     mean_finish = sum(finish)/n(),
@@ -454,7 +454,7 @@ contestant_data3 %>%
   arrange(desc(age)) %>%
   ggplot(aes(x = age, y = mean_finish)) +
   geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "Age",
@@ -466,7 +466,7 @@ contestant_data3 %>%
 ```
 
 ```{r, figure of mean finish by gender}
-contestant_data3 %>%
+contestant_data %>%
   group_by(gender) %>%
   summarise(
     mean_finish = sum(finish)/n(),
@@ -474,7 +474,7 @@ contestant_data3 %>%
   ) %>%
   ggplot(aes(x = gender, y = mean_finish, fill=gender)) +
   geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "Gender",
@@ -484,7 +484,7 @@ contestant_data3 %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() # Clean theme
 
-contestant_data3 %>%
+contestant_data %>%
   group_by(gender) %>%
   summarise(
     mean_finish = sum(normalized_finish)/n(),
@@ -492,7 +492,7 @@ contestant_data3 %>%
   ) %>%
   ggplot(aes(x = gender, y = mean_finish, fill=gender)) +
   geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "Gender",
@@ -504,7 +504,7 @@ contestant_data3 %>%
 ```
 
 ```{r, figure of mean finish by gender, race}
-contestant_data3 %>%
+contestant_data %>%
   group_by(poc) %>%
   summarise(
     mean_finish = sum(normalized_finish)/n(),
@@ -512,17 +512,17 @@ contestant_data3 %>%
   ) %>%
   ggplot(aes(x = as.factor(poc), y = mean_finish)) +
   geom_bar(stat = "identity")+  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "POC",
     y = "Mean Finish",
-    title = "Mean Finish by POC"
+    title = "Mean Placement Percentage by POC"
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() # Clean theme
 
-contestant_data3 %>%
+contestant_data %>%
   group_by(race, gender) %>%
   summarise(
     mean_finish = sum(normalized_finish/n()),
@@ -530,12 +530,12 @@ contestant_data3 %>%
   ) %>%
   ggplot(aes(x = as.factor(gender), y = mean_finish, fill=as.factor(race))) +
   geom_bar(stat = "identity", position = "dodge")+  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$normalized_finish), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "Gender",
     y = "Mean Finish",
-    title = "Mean Finish by POC"
+    title = "Mean Placement Percentage by POC"
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() # Clean theme
@@ -544,7 +544,7 @@ contestant_data3 %>%
 ```
 
 ```{r, figure of mean finish by poc/race, gender, lgbt}
-contestant_data3 %>%
+contestant_data %>%
   mutate(
     poc = case_when(poc==1 ~ "POC", poc == 0 ~ "White"),
     lgbt = case_when(lgbt == 1 ~ "LGBT", lgbt == 0 ~ "Straight")
@@ -561,12 +561,12 @@ ggplot(aes(x = lgbt, y = mean_finish, fill = race)) +
     y = "Mean Finish",
     title = "Mean Finish by Gender, POC, and LGBT"
   ) +
-  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) + 
+  geom_hline(yintercept = mean(contestant_data$finish), color = "red", size = 1) + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() +  # Clean theme
   facet_wrap(~gender, scales = "free_x")  # Facet by the three variables
 
-contestant_data3 %>%
+contestant_data %>%
   mutate(
     poc = case_when(poc==1 ~ "POC", poc == 0 ~ "White"),
     lgbt = case_when(lgbt == 1 ~ "LGBT", lgbt == 0 ~ "Straight")
@@ -583,7 +583,7 @@ ggplot(aes(x = lgbt, y = mean_finish, fill = poc)) +
     y = "Mean Finish",
     title = "Mean Finish by Gender, POC, and LGBT"
   ) +
-  geom_hline(yintercept = mean(contestant_data3$finish), color = "red", size = 1) + 
+  geom_hline(yintercept = mean(contestant_data$finish), color = "red", size = 1) + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   theme_minimal() +  # Clean theme
   facet_wrap(~gender, scales = "free_x")  # Facet by the three variables
@@ -639,14 +639,14 @@ list(table(contestant_data3$state))
 > this graph looks nice but its misleading bc canada only has 4 people -- idk if its appropriate to drop them or add them to a different section
 
 ```{r, figure of mean win percentage by finish}
-contestant_data3 %>%
+contestant_data %>%
   group_by(finish) %>%
   summarise(
-    mean_win_percentage = sum(win_percentange)/n()
+    mean_win_percentage = sum(win_percentage)/n()
   ) %>%
   ggplot(aes(x = finish, y = mean_win_percentage, fill = finish)) +
   geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
-  geom_hline(yintercept = mean(contestant_data3$win_percentange), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$win_percentage), color = "red", size = 1) +  # Add  line at overall mean
  # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
   labs(
     x = "Finish",
@@ -661,26 +661,24 @@ headshots -- using their faces to predict how long they last in the season -- ca
 ## PCA, Clustering 
 
 ```{r}
-model_data <- contestant_data3 %>%
-  select(age, gender, poc, jewish, muslim, lgbt, num_appearance, 
-         votes_against, win_percentange, num_advantages, advantage_success_rate) %>%
+pca_data <- contestant_data %>%
+  select(age, gender, poc, lgbt, num_appearance, win_percentage, num_advantages, 
+         advantage_success_rate, confessionals_per_episode) %>%
   mutate(gender = case_when(
     gender == "M" ~ 0,
     gender == "F" ~ 1
   )) %>%
-  mutate(across(where(is.factor), ~ as.numeric(as.character(.))))
+  mutate(across(where(is.factor), ~ as.numeric(as.character(.)))) %>% as.matrix()
 
-pca_data <- model_data  %>% as.matrix()
-
-pca_result <- prcomp(model_data %>% as.matrix(), scale. = TRUE)
+pca_result <- prcomp(pca_data, scale. = TRUE)
 pcs <- pca_result$x %>% 
   as_tibble() %>% 
   select(PC1, PC2, PC3, PC4, PC5, PC6) %>%
   mutate(
-    finish = contestant_data3$finish
+    finish = contestant_data$finish
   )
 
-data_with_pcs <- contestant_data3 %>%
+data_with_pcs <- contestant_data %>%
   mutate(
     PC1 = pcs$PC1,
     PC2 = pcs$PC2,
@@ -689,12 +687,13 @@ data_with_pcs <- contestant_data3 %>%
 
 ggplot(data_with_pcs, aes(PC1, PC2)) + geom_point(aes(color=(poc)))
 
-## poc, gender (pc2 - and pc1??), advantage, success, num_season pc1
-# the 4 points in the bottom right corner are all muslim contestants 
+## poc pc2, gender (pc1, and pc2? ), advantage, success pc1,
+# age, num_appearance pc2
+
 ```
 
 ```{r}
-kmeans_results <- kmeans(model_data, 3)
+kmeans_results <- kmeans(pca_data, 3)
 
 data_with_pcs <- data_with_pcs %>%
   mutate(
@@ -709,24 +708,31 @@ Next -- I should run a logistic regression or a random forest to see how well th
 
 
 ```{r}
-model1 <- lm(data = contestant_data3, finish ~ age + gender + poc + lgbt +
+model1 <- lm(data = contestant_data, finish ~ age + gender + poc + lgbt +
                num_appearance + win_percentange + advantage + success + job_category)
+
+model1 <- lm(data = contestant_data, normalized_finish ~ age + gender + poc + lgbt +
+               num_appearance + win_percentage + advantage + success + job_category +
+               confessionals_per_episode + mb_ei + mb_sn + mb_tf + mb_jp)
 summary(model1)
 plot(model1)
 
 set.seed(220)
-train_data <- contestant_data3 %>% sample_frac(0.7)
-test_data <- setdiff(contestant_data3, train_data)
+train_data <- contestant_data %>% sample_frac(0.7)
+test_data <- setdiff(contestant_data, train_data)
 
-model <- lm(data = train_data, finish ~ age + gender + poc + lgbt +
-               num_appearance + win_percentange + advantage + success + job_category)
+model <- lm(data = train_data, normalized_finish ~ age + gender + poc + lgbt +
+               num_appearance + win_percentage + advantage + success + job_category +
+               confessionals_per_episode + mb_ei + mb_sn + mb_tf + mb_jp)
 summary(model)
 plot(model)
 
 pred_vals <- predict(model, test_data) %>% as.tibble()
 
-plot(pred_vals, test_data$finish)
-
+predictions <- test_data %>%
+  mutate(
+    pred_vals = pred_vals
+  )
 
 model$fitted.values
 
@@ -734,9 +740,11 @@ model$fitted.values
 
 ```{r}
 # Filter and clean data for regression
-regression_data <- contestant_data3 %>%
+regression_data <- contestant_data %>%
   select(normalized_finish, age, gender, race, region, job_category, 
-         win_percentange, num_advantages, advantage_success_rate, num_appearance)
+         win_percentage, num_advantages, advantage_success_rate, num_appearance,
+         confessionals_per_episode, mb_ei, mb_sn, mb_tf, mb_jp)
+
 
 # Convert categorical variables to factors
 regression_data <- regression_data %>%
@@ -744,11 +752,16 @@ regression_data <- regression_data %>%
     gender = as.factor(gender),
     race = as.factor(race),
     region = as.factor(region),
-    job_category = as.factor(job_category)
+    job_category = as.factor(job_category),
+    mb_ei = as.factor(mb_ei),
+    mb_sn = as.factor(mb_sn),
+    mb_tf = as.factor(mb_tf),
+    mb_jp = as.factor(mb_jp)
   )
 
 finish_model <- lm(normalized_finish ~ age + gender + race + region + job_category + 
-                      win_percentange + num_advantages + advantage_success_rate + num_appearance, 
+                      win_percentage + num_advantages + advantage_success_rate + num_appearance +
+                   confessionals_per_episode + mb_ei + mb_sn + mb_tf + mb_jp, 
                       data = regression_data)
 
 # Summarize the model
@@ -761,7 +774,7 @@ plot(finish_model)
 
 ```{r}
 library(forcats)
-ggplot(contestant_data3, aes(x = fct_reorder(job_category, normalized_finish, .fun = median), 
+ggplot(contestant_data, aes(x = fct_reorder(job_category, normalized_finish, .fun = median), 
                             y = normalized_finish, fill = job_category)) +
     geom_boxplot(outlier.color = "red", alpha = 0.8) +
     coord_flip() +
@@ -769,12 +782,12 @@ ggplot(contestant_data3, aes(x = fct_reorder(job_category, normalized_finish, .f
          x = "Job Category",
          y = "Placement Percentile") +
     theme_minimal() +
-    geom_hline(yintercept = mean(contestant_data3$normalized_finish), 
+    geom_hline(yintercept = mean(contestant_data$normalized_finish), 
                color = "red", size = 1) +  # Add  line at overall mean
     theme(legend.position = "none") # Hide legend for cleaner visualization
 
 
-contestant_data3 %>%
+contestant_data %>%
   mutate(
     gender_race = paste(gender, race, sep = " + ")  # Create a combined variable
   ) %>%
@@ -785,7 +798,7 @@ contestant_data3 %>%
   # ) %>%
   ggplot(aes(x = reorder(gender_race, normalized_finish), y = normalized_finish, fill = gender)) +
   geom_boxplot(alpha = 0.8) +  # Use bar plot with calculated means
-  geom_hline(yintercept = mean(contestant_data3$normalized_finish, na.rm = TRUE), 
+  geom_hline(yintercept = mean(contestant_data$normalized_finish, na.rm = TRUE), 
              color = "red", size = 1) +  # Add overall mean line
   labs(
     title = "Mean Finish by Gender and Race",
@@ -800,22 +813,21 @@ contestant_data3 %>%
   )
 ```
 
-
 Also it would probs be good to start separating this file into different R scripts for the Makefile
 
 ```{r}
-contestant_data3 %>%
+contestant_data %>%
   group_by(job_category) %>%
-  summarise(mean_win_percentage = mean(win_percentange, na.rm = TRUE)) %>%
+  summarise(mean_win_percentage = mean(win_percentage, na.rm = TRUE)) %>%
   ggplot(aes(x = reorder(job_category, mean_win_percentage), y = mean_win_percentage)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   coord_flip() +
-  geom_hline(yintercept = mean(contestant_data3$win_percentange), color = "red", size = 1) +  # Add  line at overall mean
+  geom_hline(yintercept = mean(contestant_data$win_percentage), color = "red", size = 1) +  # Add  line at overall mean
   labs(title = "Average Win Percentage by Job Category", x = "Job Category", y = "Win Percentage")
 ```
 
 ```{r}
-contestant_data3 %>% filter(advantage == 1) %>%
+contestant_data %>% filter(advantage == 1) %>%
   group_by(job_category) %>%
   summarise(
     n = n(),
@@ -824,22 +836,23 @@ contestant_data3 %>% filter(advantage == 1) %>%
  ggplot(aes(x = reorder(job_category, avg_success_rate), y = avg_success_rate)) +
   geom_bar(stat = "identity", position = "dodge", fill = "skyblue") +
   coord_flip() +
-  geom_hline(yintercept = mean((contestant_data3 %>% filter(advantage == 1))$advantage_success_rate), 
+  geom_hline(yintercept = mean((contestant_data %>% filter(advantage == 1))$advantage_success_rate), 
              color = "red", size = 1) +  # Add  line at overall mean
   labs(title = "Advantage Success Rate by Job Category", x = "Gender", y = "Average Value")
 
 
-contestant_data3 %>%
+contestant_data %>%
   ggplot(aes(x = region, y = normalized_finish, fill = region)) +
   geom_boxplot() +
   coord_flip() +
   labs(title = "Placement Distribution by Region", x = "Region", y = "Placement Percentile") +
   theme_minimal()
+
 ```
 
 ```{r}
 ## this graph is good -- not sure if i will use anything else 
-contestant_data3 %>%
+contestant_data %>%
   group_by(num_season) %>%
   summarise(
     pct_poc = mean(race != "White", na.rm = TRUE) * 100,
@@ -850,7 +863,7 @@ contestant_data3 %>%
   geom_line(size = 1) +
   labs(title = "Diversity Representation Over Seasons", x = "Season", y = "Percentage", color = "Group")
 
-contestant_data3 %>%
+contestant_data %>%
   group_by(num_season) %>%
   filter(ftc == 1) %>%
   summarise(
@@ -863,7 +876,7 @@ contestant_data3 %>%
   labs(title = "Diversity Representation of FTC Over Seasons", x = "Season", y = "Percentage", color = "Group")
 
 
-mean((contestant_data3 %>%
+mean((contestant_data %>%
   group_by(num_season) %>%
   summarise(
     pct_poc = mean(race != "White", na.rm = TRUE)
@@ -871,7 +884,7 @@ mean((contestant_data3 %>%
 
 library(knitr)
 
-contestant_data3 %>%
+contestant_data %>%
   filter(
     finish==16 & num_season %in% c(1,2,3,4,5,6,7,12,15,18) |
     finish==18 & num_season %in% c(8,9,11,17,22,23,24,25,28,29,30,32,35,38,41,42,43) |
@@ -904,7 +917,7 @@ contestant_data3 %>%
 ```
 
 ```{r}
-contestant_data3 %>%
+contestant_data %>%
   group_by(num_season) %>%
   summarise(
     pct_poc = mean(race != "White", na.rm = TRUE) * 100,
@@ -916,4 +929,124 @@ contestant_data3 %>%
   labs(title = "Diversity Representation Over Seasons", x = "Season", y = "Percentage", color = "Group")
 ```
 
+
+```{r}
+confessionals %>% 
+  filter(version == "US") %>%
+  group_by(season, castaway_id) %>%
+  summarise(
+    num_confessionals = sum(confessional_count),
+    num_episodes = n(),
+    confessionals_per_episode = num_confessionals/num_episodes
+  )
+```
+
+```{r}
+contestant_data
+
+seasons44_46 <- castaways %>% 
+  filter(version == "US", castaway_id > "US0644") %>%
+  mutate(
+    num_appearance = case_when(
+      castaway_id == "US0657" & season == 45 ~ 2,
+      TRUE ~ 1
+    ),
+    jury = as.numeric(jury),
+    finalist = as.numeric(finalist),
+    normalized_finish = (18-result_number)/18
+  ) %>%
+  rename(contestant_name = full_name,
+         num_season = season,
+         finish = result_number,
+         ftc = finalist,
+         num_boot = order,
+         tribe1 = original_tribe)
+
+seasons44_46_info <- castaway_details %>% 
+  filter(substr(castaway_id, 1, 2) == "US") %>% 
+  rename(
+    profession = occupation, 
+    contestant_name = full_name,
+    african_american = african,
+    asian_american = asian,
+    poc = bipoc,
+    birthdate=date_of_birth
+  ) %>%
+  mutate(
+    gender = case_when(
+      gender == "Female" ~ "F",
+      gender == "Male" ~ "M",
+      TRUE ~ "F"
+    ),
+    african_american = as.numeric(african_american),
+    asian_american = as.numeric(asian_american),
+    latin_american = as.numeric(latin_american),
+    poc = as.numeric(poc),
+    lgbt = as.numeric(lgbt)
+  )
+
+
+
+contestant_data_44_46 <- seasons44_46 %>%
+  inner_join(seasons44_46_info, by = "castaway_id") %>% 
+  select(castaway_id, num_season, contestant_name.x, age, state, num_boot,
+         tribe1, jury, ftc, finish, num_appearance, normalized_finish, birthdate,
+         gender, african_american, asian_american, latin_american, poc, lgbt,
+         profession) %>%
+  rename(contestant_name = contestant_name.x)
+
+contestants_all_seasons <- bind_rows(contestant_data, contestant_data_44_46) 
+
+contestants_all_seasons %>%
+  left_join(seasons44_46_info %>% select(castaway_id, personality_type), by="castaway_id")
+
+```
+
+```{r}
+castaways %>%
+  filter(version == "US") %>%
+  group_by(castaway_id, season) %>%
+  summarise(
+    n = n()
+  )
+length((castaways%>% filter(version=="US"))$castaway_id)
+
+(castaway_details %>%
+  filter(substr(castaway_id, 1, 2) == "US"))$personality_type
+
+contestant_data %>%
+  left_join(
+    castaway_details %>%
+      filter(substr(castaway_id, 1, 2) == "US") %>%
+      select(castaway_id, personality_type),
+    by = "castaway_id"
+  )
+
+```
+
+```{r}
+contestant_data %>%
+  mutate(
+    mb_ei = case_when(
+      substr(personality_type, 1, 1) == "E" ~ "Extraversion",
+      substr(personality_type, 1, 1) == "I" ~ "Introversion",
+      TRUE ~ NA
+    ),
+    mb_sn = case_when(
+      substr(personality_type, 2, 2) == "S" ~ "Sensing",
+      substr(personality_type, 2, 2) == "N" ~ "Intuition",
+      TRUE ~ NA
+    ),
+    mb_tf = case_when(
+      substr(personality_type, 3, 3) == "T" ~ "Thinking",
+      substr(personality_type, 3, 3) == "F" ~ "Feeling",
+      TRUE ~ NA
+    ),
+    mb_jp = case_when(
+      substr(personality_type, 4, 4) == "J" ~ "Judging",
+      substr(personality_type, 4, 4) == "P" ~ "Perceiving",
+      TRUE ~ NA
+    )
+  )
+```
 
