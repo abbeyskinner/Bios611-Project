@@ -711,9 +711,9 @@ Next -- I should run a logistic regression or a random forest to see how well th
 model1 <- lm(data = contestant_data, finish ~ age + gender + poc + lgbt +
                num_appearance + win_percentange + advantage + success + job_category)
 
-model1 <- lm(data = contestant_data, normalized_finish ~ age + gender + poc + lgbt +
-               num_appearance + win_percentage + advantage + success + job_category +
-               confessionals_per_episode + mb_ei + mb_sn + mb_tf + mb_jp)
+model1 <- lm(data = contestant_data, normalized_finish ~ age + gender + poc +
+                 win_percentage + advantage + success + job_category +
+               confessionals_per_episode + mb_ei)
 summary(model1)
 plot(model1)
 
@@ -721,47 +721,54 @@ set.seed(220)
 train_data <- contestant_data %>% sample_frac(0.7)
 test_data <- setdiff(contestant_data, train_data)
 
-model <- lm(data = train_data, normalized_finish ~ age + gender + poc + lgbt +
-               num_appearance + win_percentage + advantage + success + job_category +
-               confessionals_per_episode + mb_ei + mb_sn + mb_tf + mb_jp)
+model <- lm(data = train_data, finish ~ age + gender + poc +
+                 win_percentage + advantage + success + job_category +
+               confessionals_per_episode + mb_ei)
 summary(model)
 plot(model)
 
-pred_vals <- predict(model, test_data) %>% as.tibble()
-
-predictions <- test_data %>%
+pred_vals <- predict(model, test_data) %>% as.tibble() %>%
   mutate(
-    pred_vals = pred_vals
-  )
+    predicted = round(value),
+    observed = test_data$finish,
+    residual = observed - predicted
+  ) %>%
+  select(-1) %>%
+  filter(residual > -4 & residual < 4)
 
-model$fitted.values
 
+
+%>%
+  ggplot(aes(x=observed, y=predicted)) + geom_point()
+
+model$fitted.values %>% as.tibble()
+pred_vals
 ```
 
 ```{r}
 # Filter and clean data for regression
 regression_data <- contestant_data %>%
-  select(normalized_finish, age, gender, race, region, job_category, 
+  select(normalized_finish, finish, age, gender, race, poc, region, job_category, 
          win_percentage, num_advantages, advantage_success_rate, num_appearance,
-         confessionals_per_episode, mb_ei, mb_sn, mb_tf, mb_jp)
+         confessionals_per_episode, mb_ei, mb_sn, mb_tf, mb_jp, personality_type)
 
 
 # Convert categorical variables to factors
 regression_data <- regression_data %>%
   mutate(
     gender = as.factor(gender),
+    poc = as.factor(poc),
     race = as.factor(race),
     region = as.factor(region),
     job_category = as.factor(job_category),
     mb_ei = as.factor(mb_ei),
     mb_sn = as.factor(mb_sn),
     mb_tf = as.factor(mb_tf),
-    mb_jp = as.factor(mb_jp)
-  )
+    mb_jp = as.factor(mb_jp)  )
 
-finish_model <- lm(normalized_finish ~ age + gender + race + region + job_category + 
+finish_model <- lm(normalized_finish ~ age + gender + poc + 
                       win_percentage + num_advantages + advantage_success_rate + num_appearance +
-                   confessionals_per_episode + mb_ei + mb_sn + mb_tf + mb_jp, 
+                   confessionals_per_episode + mb_ei, 
                       data = regression_data)
 
 # Summarize the model
@@ -775,8 +782,8 @@ plot(finish_model)
 ```{r}
 library(forcats)
 ggplot(contestant_data, aes(x = fct_reorder(job_category, normalized_finish, .fun = median), 
-                            y = normalized_finish, fill = job_category)) +
-    geom_boxplot(outlier.color = "red", alpha = 0.8) +
+                            y = normalized_finish)) +
+    geom_boxplot( alpha = 0.8, fill = "skyblue") +
     coord_flip() +
     labs(title = "Survivor Placement Percentile by Job Category",
          x = "Job Category",
@@ -791,11 +798,6 @@ contestant_data %>%
   mutate(
     gender_race = paste(gender, race, sep = " + ")  # Create a combined variable
   ) %>%
-  # group_by(gender_race) %>%
-  # summarise(
-  #   mean_finish = mean(normalized_finish, na.rm = TRUE),
-  #   total = n()
-  # ) %>%
   ggplot(aes(x = reorder(gender_race, normalized_finish), y = normalized_finish, fill = gender)) +
   geom_boxplot(alpha = 0.8) +  # Use bar plot with calculated means
   geom_hline(yintercept = mean(contestant_data$normalized_finish, na.rm = TRUE), 
@@ -803,13 +805,13 @@ contestant_data %>%
   labs(
     title = "Mean Finish by Gender and Race",
     x = "Gender + Race",
-    y = "Mean Finish"
+    y = "Mean Finish",
+    fill = "Gender"
   ) +
   theme_minimal() +
   coord_flip() +  # Flip the axes for better readability
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels
-    legend.position = "none"  # Remove legend for clarity
+    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
   )
 ```
 
@@ -1049,4 +1051,131 @@ contestant_data %>%
     )
   )
 ```
+
+
+```{r}
+ggplot(contestant_data %>% drop_na(personality_type), aes(x = fct_reorder(personality_type, normalized_finish, .fun = median), 
+                            y = normalized_finish, fill = mb_ei)) +
+    geom_boxplot(outlier.color = "red", alpha = 0.8) +
+    coord_flip() +
+    labs(title = "Survivor Placement Percentile by Personality Type",
+         x = "Personality Type",
+         y = "Placement Percentile",
+         fill = "Personality") +
+    theme_minimal() +
+    geom_hline(yintercept = mean(contestant_data$normalized_finish), 
+               color = "red", size = 1) #+  # Add  line at overall mean
+    #theme(legend.position = "none") # Hide legend for cleaner visualization
+```
+
+```{r}
+contestant_data %>%
+  group_by(finish) %>%
+  summarise(
+    mean_confessionals = sum(confessionals_per_episode)/n()
+  ) %>%
+  ggplot(aes(x = finish, y = mean_confessionals, fill = finish)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
+  geom_hline(yintercept = mean(contestant_data$confessionals_per_episode), color = "red", size = 1) +  # Add  line at overall mean
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "Finish",
+    y = "Mean Confessionals per Episode",
+    title = "Mean Confessionals per Episode by Finish"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+
+
+contestant_data %>%
+  group_by(normalized_finish) %>%
+  summarise(
+    mean_confessionals = sum(confessionals_per_episode)/n()
+  ) %>%
+  ggplot(aes(x=as.factor(normalized_finish), y= mean_confessionals)) +
+  geom_bar(stat="identity")
+```````
+
+```{r}
+contestant_data %>%
+  filter(advantage == 1) %>%
+  group_by(finish) %>%
+  summarise(
+    average_success_rate = sum(advantage_success_rate)/n()
+  ) %>%
+  ggplot(aes(x = finish, y = average_success_rate, fill = finish)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +  # Use stat = "identity" for pre-calculated values
+ # geom_text(aes(label = round(mean_finish, 2)), vjust = -0.3) + # Add labels with rounded mean values
+  labs(
+    x = "Finish",
+    y = "Average Success Rate",
+    title = "Average Advantage Success Rate by Finish"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  theme_minimal() # Clean theme
+```
+
+```{r}
+library(randomForest)
+
+# Filter and clean data for regression
+rf_data <- contestant_data %>%
+  select(normalized_finish, finish, age, gender, race, poc, region, job_category, 
+         win_percentage, num_advantages, advantage_success_rate, num_appearance,
+         confessionals_per_episode, mb_ei, mb_sn, mb_tf, mb_jp, personality_type) %>%
+  mutate(
+    gender = as.factor(gender),
+    poc = as.factor(poc),
+    race = as.factor(race),
+    region = as.factor(region),
+    job_category = as.factor(job_category),
+    mb_ei = as.factor(mb_ei),
+    mb_sn = as.factor(mb_sn),
+    mb_tf = as.factor(mb_tf),
+    mb_jp = as.factor(mb_jp)  ) %>% 
+  drop_na(personality_type) %>%
+  select(-c(normalized_finish, mb_ei, mb_sn, mb_tf, mb_jp))
+
+set.seed(220)
+train_data <- rf_data %>% sample_frac(0.7)
+test_data <- setdiff(rf_data, train_data)
+
+# Random forest model
+rf_model <- randomForest(train_data$finish ~ ., data = train_data[,-1], ntree = 500, mtry = 2, importance = TRUE)
+
+# View the model summary
+print(rf_model)
+
+# Variable importance
+importance(rf_model)
+varImpPlot(rf_model)
+
+# Predict on test data
+rf_predictions <- predict(rf_model, newdata = test_data) %>% as.tibble()
+
+predict(rf_model, newdata = test_data) %>% as.tibble() %>%
+  mutate(observed = test_data$finish,
+         expected = round(value),
+         residual = observed - expected) %>%
+  filter(residual < 4,
+         residual > -4)
+
+mse <- mean((test_data$finish - rf_predictions)^2)
+print(paste("Mean Squared Error:", mse))
+
+ss_total <- sum((test_data$finish - mean(test_data$finish))^2)
+ss_residual <- sum((test_data$finish - rf_predictions)^2)
+r_squared <- 1 - (ss_residual / ss_total)
+
+plot(test_data$finish, rf_predictions,
+     xlab = "Actual Values",
+     ylab = "Predicted Values",
+     main = "Actual vs. Predicted")
+abline(0, 1, col = "blue", lwd = 2) # Diagonal line for perfect prediction
+
+
+
+```
+
+
 
