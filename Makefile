@@ -31,5 +31,18 @@ derived_data/contestant_data.csv: contestants.R job_category.R\
  derived_data/challenge_data.csv derived_data/advantages.csv\
  derived_data/advantages_success.csv derived_data/contestants_all_seasons.csv
 	Rscript contestants.R
+	
+figures/job_finish.png: figure_job_finish.R derived_data/contestant_data.csv
+	Rscript figure_job_finish.R
+	
+figures/gender_race_finish.png: figure_gender_race_finish.R derived_data/contestant_data.csv
+	Rscript figure_gender_race_finish.R
+	
+figures/personality.png: figure_personality.R derived_data/contestant_data.csv
+	Rscript figure_personality.R
+	
+figures/win_perc.png: figure_win_perc.R derived_data/contestant_data.csv
+	Rscript figure_win_perc.R
+
 
  
