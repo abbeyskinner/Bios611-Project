@@ -2,17 +2,13 @@
 .PHONY: init
 
 clean:
-	rm -rf models
 	rm -rf figures
 	rm -rf derived_data
-	rm -rf logs
-	rm -rf report.html
+	rm -rf report
 
 init:
-	mkdir -p models
 	mkdir -p figures
 	mkdir -p derived_data
-	mkdir -p logs
 	
 derived_data/contestants_all_seasons.csv: merge_seasons.R\
  /home/rstudio/work/data/survivor/contestant_table.csv | init
@@ -47,6 +43,10 @@ figures/win_perc.png: figure_win_perc.R derived_data/contestant_data.csv
 	
 figures/demographics.png: figure_demographics.R derived_data/contestant_data.csv
 	Rscript figure_demographics.R
+
+report/report.html: report.Rmd figures/job_finish.png figures/gender_race_finish.png\
+ figures/personality.png figures/win_perc.png figures/demographics.png
+	Rscript -e "rmarkdown::render('report.Rmd', output_format = 'html_document')"
 
 
  
