@@ -798,7 +798,7 @@ contestant_data %>%
   mutate(
     gender_race = paste(gender, race, sep = " + ")  # Create a combined variable
   ) %>%
-  ggplot(aes(x = reorder(gender_race, normalized_finish), y = normalized_finish, fill = gender)) +
+  ggplot(aes(x = fct_reorder(gender_race, normalized_finish, .fun = median), y = normalized_finish, fill = gender)) +
   geom_boxplot(alpha = 0.8) +  # Use bar plot with calculated means
   geom_hline(yintercept = mean(contestant_data$normalized_finish, na.rm = TRUE), 
              color = "red", size = 1) +  # Add overall mean line
