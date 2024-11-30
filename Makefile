@@ -29,7 +29,8 @@ derived_data/confessional_data.csv: confessional.R | init
 
 derived_data/contestant_data.csv: contestants.R job_category.R\
  derived_data/challenge_data.csv derived_data/advantages.csv\
- derived_data/advantages_success.csv derived_data/contestants_all_seasons.csv
+ derived_data/advantages_success.csv derived_data/contestants_all_seasons.csv\
+ derived_data/confessional_data.csv
 	Rscript contestants.R
 	
 figures/job_finish.png: figure_job_finish.R derived_data/contestant_data.csv
