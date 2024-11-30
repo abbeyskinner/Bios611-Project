@@ -43,6 +43,9 @@ figures/personality.png: figure_personality.R derived_data/contestant_data.csv
 	
 figures/win_perc.png: figure_win_perc.R derived_data/contestant_data.csv
 	Rscript figure_win_perc.R
+	
+figures/demographics.png: figure_demographics.R derived_data/contestant_data.csv
+	Rscript figure_demographics.R
 
 
  
