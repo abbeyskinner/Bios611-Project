@@ -5,7 +5,7 @@ For my 611 Final Project, I will be looking at data on the CBS show 'Survivor'. 
 
 # First source: 
 Kaggle - https://www.kaggle.com/datasets/justinveiner/survivor-cbs-dataset?resource=download 
-There are 3 datasets from this source -- contestant data, season data, and tribe data. I mainly will be looking at the contestant dataset, but the other 2 datasets have been helpful for background information. I also may do some data wrangling to add information from the season/tribe datasets to the contestant dataset. All of these files are .csv's. The data from Kaggle is on the first 43 seasons of Survivor US. Contestant data contains observations on each contestant in the first 43 seasons. It has 785 observations and 32 variables. The variables in the contestant data are as follows:
+The dataset I will be using from this source is called contestant data. This data is on the first 43 seasons of Survivor USA. Contestant data contains observations on each contestant in the first 43 seasons. It has 785 observations and 32 variables. The relevant variables in the contestant data are as follows:
 * contestant_name
 * age
 * hometown
@@ -17,29 +17,13 @@ There are 3 datasets from this source -- contestant data, season data, and tribe
 * asiain_american - boolean for asian america
 * latin_american - boolean for latin america
 * poc - boolean for poc
-* jewish - boolean for jewish
-* muslim - boolean for muslim
 * lbgt - bookean for lgbt
 * state - state they currently reside in
-* country - either US or CA
 * num_appearance - number of appearances on show (1=1st season, 2=2nd season, ...)
-* birthdate
-* merge - boolean for if they made the merge
-* jury - boolean for if were in the jury
-* ftc - boolean for if were in final tribal council
 * votes_against - total number of votes casted against them throughout the season
 * num_boot - elimination order (1=1st person voted off)
-* tribe1 - 1st tribe's name
-* tribe2 - 2nd pre-merge tribe's name (if applicable)
-* tribe3 - 3rd pre-merge tribe's name (if applicable)
-* quit - boolean for if they quit
-* evac - boolean for if they were medically evacuated
-* ejected - boolean for if they were ejected
-* fmc - boolean for if they won the fire making challenge 
 * num_jury_votes - number of jury votes received (if applicable)
 * normalized_finish - placement percentile
-
-I will not investigate all of these variables. Also note that the season data contains information on each of the 43 seasons (43 observations, 22 variables) and the tribe data contains information on every tribe over all seasons (224 observations, 16 variables).
 
 # Second souce: 
 The second source of data that I found comes from the `survivoR` R package: https://cran.r-project.org/web/packages/survivoR/survivoR.pdf. It has a multitude of datasets, but the ones that are the most of interest to me are challenge_summary, advantage_movement, and confessionals. The information that I want to take from these datasets would be 
@@ -90,6 +74,10 @@ here are the relevant variables for confessional_data:
 5. Do advantages help you win? I hypothesize that using advantages correctly may help you win, but sometimes it can put a bigger target on your back. I am interested to see how often winners have had advantages and used them sucessfully (or not). I also am interested to see how often people with advantages get voted out before final tribal council.
 
 6. Do winners get more confessional time? Seasons are filmed far before they are aired, so the producers know who wins the game before editing of the episodes begins. Is there a way to predict who will win the show based on the average number of confessionals each contestant gets per episode? 
+
+# How to use this Repo?
+
+After downloading the files, run `make report/report.html` in the terminal and enjoy! Data from Kaggle can be found in the data folder and data from the `survivoR` package can be obtained by downloading the package and calling the respective dataset names. More information on the package can be found here: https://cran.r-project.org/web/packages/survivoR/survivoR.pdf 
 
 
 
