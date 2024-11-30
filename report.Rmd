@@ -1,8 +1,6 @@
 ---
-title: "Title - something about survivor"
-output:
-  pdf_document: default
-  html_document: default
+title: "Survivor: Who Outwits, Outlasts, and Outplays Most Often?"
+output: html_document
 date: "2024-10-07"
 ---
 
@@ -12,29 +10,33 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Intro
 
-The CBS Show Survivor is a reality TV competition where contestants compete for the title of "Sole Survivor" and the $1,000,000 grand prize. Contestants are split into tribes, placed on an island and forced to build a shelter, make fire, and find food for themselves while competing in challenges for both rewards and immunity. After each immunity challenge, the losers are sent to Tribal Council and forced to vote to eliminate one of their fellow castaways, until 2 or 3 remain. The the previously eliminated castaways vote to crown the winner of Survivor.
+Survivor, the CBS reality TV show, is a competition where contestants compete for the title of "Sole Survivor" and a $1,000,000 grand prize. Contestants are divided into tribes, placed on an island, and forced to build a shelter, make fire, and find food for themselves while competing in challenges for both rewards and immunity. After each immunity challenge, the losing tribe is sent to Tribal Council and forced to vote to eliminate one of their fellow castaways. This continues until only 2 or 3 contestants remain, at which point the previously eliminated castaways vote to crown the winner of Survivor.
 
-Survivor is a game of strategy -- how can you sneak through each tribal council without being voted out? But also, Survivor is a social experiment -- "the greatest social experiment of all time" as Jeff Probst likes to claim periodically as he is hosting the show. The kick is, that the people you are competing against are also the ones who decide if you make it to the end, and eventually win (or not). I am interested in understanding what types of people make it farther in the game. In this project, I will analyze data on contestants who played in Survivor USA from seasons 1-46. This data comes from 2 sources: Kaggle's "Survivor (CBS) Dataset" and the R package 'survivoR'. 
+Survivor is a game of strategy -- how can you sneak through each tribal council without being voted out? But, Survivor is also a social experiment -- "the greatest social experiment of all time" as the host Jeff Probst often claims. The kick is that the people you are competing against are also the ones who decide if you make it to the end, and ultimately win (or not). I am interested in exploring what types of contestants tend to succeed in this unique environment. Using data on contestants from Survivor USA (seasons 1-46), I will analyze trends and investigate what factors (demographics, professions, and personality-types) may contribute to their success. The data for this project comes from 2 sources: Kaggle's "Survivor (CBS) Dataset" and the R package `survivoR`. 
+
 
 # Demographics
 
-Before exploring what types of people make it farther in the game, we want to understand what the demographics of people playing the game are. While there has always been a 50/50 split of males and females, the percentage of BIPOC and Queer contestants has not stayed constant. Figure 1 shows how the demographic makeup of Survivor contestants has changed over the first 46 seasons. 
+Before exploring what factors lead to success in the game, we want to understand the demographic makeup of the contestants. While there has always been a 50/50 split of male and female players, the representation of BIPOC and Queer contestants has not stayed constant. Figure 1 illustrates how the demographic makeup of Survivor contestants has evolved over the first 46 seasons. 
 
-We find that over time, the percentage of BIPOC contestants has gradually increased with a spike at seasons 13-14 and 41+. In season 13, the tribes were initally split by race where there were a African American, Asian American, Latin American, and European American tribes. Season 14, maintained the diversity to show that the previous season was a conscious effort rather than a publicity stunt. Additionally, in 2021 CBS implemented a rule that at least 50% of the contestants must be non-white. Before this rule, Survivor was under representing people of color as roughly 40% of the US population is non-white.
+We observe a gradual increase in the percentage of BIPOC contestants, with notable spikes during seasons 13-14 and 41+. In season 13, a twist was introduced where the tribes were initially divided by race, resulting in a more diverse cast. Season 14, maintained this diversity to show that the previous season was a conscious effort rather than a publicity stunt. Additionally, in 2021 CBS implemented a rule that at least 50% of the cast members must be non-white. Before this rule, Survivor was consistently underrepresenting people of color as roughly 40% of the US population is non-white.
 
-When looking at how the percentage of queer contestants has changed over the seasons, we see a pretty consistent fluctuation between 0% and 20% with a slight increase in recent seasons. This trend is generally pretty representative of the US population as roughly 10% of US adults identify as queer. Overall, we find that while Survivor has never had too big of an issue with queer representation, the same cannot be said for representation of people of color, but the show has become more racially diverse with efforts in recent years.
+In contrast, the representation of queer contestants has remained relatively stable, fluctuating between 0% and 20%, with a slight upward trend in recent seasons. This trend is generally representative of the US population as roughly 10% of US adults identify as queer. Overall, we find that while Survivor has been reasonably inclusive of queer contestants, its progress in racial diversity is more recent, reflecting conscious efforts to address past disparities.
 
-```{r, echo=FALSE, fig.cap="Percentage of POC and Queer Contestants over Seasons 1-46", fig.height=2, fig.width=2}
+```{r, echo=FALSE, fig.cap="Percentage of POC and Queer Contestants over Seasons 1-46"}
 knitr::include_graphics("figures/demographics.png")
 ```
 
 # What Types of People Do Well in Survivor?
 
+Success in Survivor can be quantified by how far contestants advance in the game. To account for variability in cast sizes (ranging from 16 to 20 contestants), we calculate placement percentiles, where 0% indicates an early elimination and 100% corresponds to winning the game.
+
+
 ## Demographic Groups
 
-One way we can measure how well contestants do in Survivor is by looking at how far they make it in the game. Since seasons have varying number of contestants, from 16 to 20, we can calculate their placement percentile where closer to 0% means they were voted out earlier and closer to 100% means they made it farther in the game and potentially won.
+Figure 2 displays the distributions of placement percentiles for 8 different demographic groups, ranked in decreasing order. We find that male Latin American contestants, on average, tend to advance the farthest in the game, while female Latin American contestants get voted out the earliest, on average. This suggests that gender plays a large role in the outcomes for Latin American players. Overall, males seem to make it farther in the game, regardless of race. When looking across races, we also find that white contestants, regardless of race, tend to last longer in the game than other races. 
 
-Figure 2 shows the distributions of placement percentiles for 8 different demographic groups in decreasing order. We find that male Latin Americans, on average, make it the farthest in the game, whereas female Latin Americans get voted out the earliest, on average. This is an interesting observation telling us that, among Latin American contestants, gender seems to be a large factor in how far you make it in the game. Overall, it seems that males dominate the upper half of the figure and females dominate the lower half indicating, that regardless of race, males tend to make it farther in the game than females. When looking across races, we also find that white contestants, regardless of race, tend to make it farther in the game than other races. Overall, we find that, as expected, white contestants and male contestants tend to make it farther whereas females of color tend to get voted out earlier. Please not that these are all observations and since we are not running any statistical test, we cannot make any statistically backed claims about if these groups are significantly different from another.
+These observations align with existing societal biases, where white and male contestants may benefit from implicit advantages in social dynamics. However, it’s important to note that these are descriptive observations, not statistical inferences. Further analysis would be needed to determine whether these differences are statistically significant.
 
 ```{r, echo=FALSE, fig.cap="Placement Percentiles of Different Demographic Groups"}
 knitr::include_graphics("figures/gender_race_finish.png")
@@ -42,15 +44,46 @@ knitr::include_graphics("figures/gender_race_finish.png")
 
 ## Job Types
 
-We can also look at how well different job types do in Survivor
+We can also look at how well different job types do in Survivor. I had expected that contestants who work in professions which require strong social and communication skills (sales) or where you must be deceitful and convincing (lawyers, undercover cops) would fare better in Survivor. 
 
+Figure 3 shows the distributions of placement percentiles for various different types of jobs in decreasing order. We find that contestants who work in Agriculture, Outdoors, and Animal Care perform best compared to other types of jobs. Individuals working in these types of doors may be more mentally equipped to deal with building a shelter, making fire, finding food, and dealing with the elements. Additionally jobs in this sector tend to be more physically laboring, which could may potentially be an advantage in the game. Contestants who work in Sports and Fitness come next in the list, likely benefiting from physical fitness.
+
+At the bottom of the rankings, we find contestants whose jobs didn’t fit neatly into other categories, as well as those in Legal professions and Sales & Marketing. Contrary to my expectations, individuals in these roles may struggle because their strengths can make them perceived as threats early on, leading to premature eliminations.
+
+```{r, echo=FALSE, fig.cap="Placement Percentiles of Different Job Categories"}
+knitr::include_graphics("figures/job_finish.png")
+```
+
+## Personality Types
+
+Another aspect we can dive into is different types of personalities. To understand this we can use the Myers-Briggs personality test which sorts people into 16 different personality types. There are 4 categories of the test and each individual is grouped into 1 of 2 categories for each section and given a 4 letter type. The categories are Introversion (I) vs. Extraversion (E), Sensing (S) vs. Intuition (N), Thinking (T) vs. Feeling (F), and Judging (J) vs. Perceiving (P).
+
+Figure 4 shows us the distribution of placement percentiles for each different Myers-Briggs personality type in descending order. ENFJ comes out on top, where as ESTJ is on the bottom. ENFJs are known as the Protagonist and typically are warm, outgoing, love to help others, and are natural born leaders. It is possible that their friendliness may help them get into a position with power and sway in the game. ESTJs are known as the Executive and typically are logical, organized, having strong analytical skills, and are leaders. It is possible that this could come across as bossy or overbearing early on in the game if they are used to being in a position where they come up with ideas and tell others what to do.
+
+Interestingly, introverts dominate the top half of the rankings, while extraverts are more prominent in the bottom half. This suggests that introverts may have an advantage in Survivor, possibly because their quieter nature allows them to avoid drawing attention and painting a target on their back.
+
+```{r, echo=FALSE, fig.cap="Placement Percentiles of Myers-Briggs Personality Types"}
+knitr::include_graphics("figures/personality.png")
+```
+
+# Conclusion and Additional Thoughts
+
+This analysis provides valuable insights into factors that influence success in Survivor, revealing how demographics, professions, and personality types can shape contestants' outcomes. However, the complexities of social dynamics and strategic gameplay remain challenging to quantify. To deepen my understanding of what it takes to become the "Sole Survivor," I also explored other aspects of the game, such as advantage use and challenge performance.
+
+After running linear regression models, I found that finding an advantage in the game was the strongest predictor of advancing farther in the game. Additionally, performing well in challenges showed a nonlinear relationship with progression in the game. Looking at figure 5, we find that strong performance in challenges, measured by win percentage, is more often observed in contestants who were eliminated in the middle of the pack, while weaker performance is more often observed in constants eliminated early on or later in the game. Contestants getting 1st or 2nd place tended to have perform averagely. This tells us that early in the game, being weak is seen as a disadvantage, but as the game progresses, being strong is seen as a threat and those who do the best in challenges start to get picked off. 
+
+```{r, echo=FALSE, fig.cap="Average Win Percentage Across Placement, where Finish=1 is the winner and Finish=20 was voted out first. The red line is the mean win percentage over all contestants."}
+knitr::include_graphics("figures/win_perc.png")
+```
+
+Ultimately, success in Survivor hinges on a contestant's ability to outwit, outlast, and outplay. These three pillars of gameplay are interconnected and require balancing strength, strategy, and social perception. To outwit is to excel at social maneuvering and strategic thinking, forming alliances and blindsiding opponents at the right moments. To outlast is to endure the physical and mental toll of the game, including its harsh living conditions and constant pressure. To outplay is to demonstrate skill in challenges, whether by securing immunity or gaining advantages to shift the balance of power. Navigating these elements requires finesse; being too dominant in any one area can quickly make a contestant a target. Conversely, contestants who blend into the background may not garner enough respect to win the jury’s vote in the end.
+
+In conclusion, Survivor is not just a test of physical strength or strategic cunning—it’s a delicate and multifaceted social experiment that rewards adaptability, resilience, and the ability to navigate complex group dynamics. The ever-changing nature of the game ensures that no single formula guarantees success, making each season a thrilling exploration of what it truly means to outwit, outlast, and outplay.
 
 # References
 
-Cite these:
+Survivor (CBS) Dataset. (n.d.). Retrieved November 30, 2024, from https://www.kaggle.com/datasets/justinveiner/survivor-cbs-dataset
 
-https://www.kaggle.com/datasets/justinveiner/survivor-cbs-dataset?resource=download 
+Oehm, D. (2021). survivoR: Data from all Seasons of Survivor (US) TV Series in Tidy Format (p. 2.3.4) [Dataset]. https://doi.org/10.32614/CRAN.package.survivoR
 
-package 
-
-https://danis-survivor.fandom.com/wiki/50%25_BIPOC_Rule#:~:text=The%20rule%20states%20that%20all,%2C%20Indigenous%2C%20People%20of%20Colour. 
+.Survivor Wiki | Fandom. (n.d.). Retrieved November 30, 2024, from https://survivor.fandom.com/wiki/Main_Page
