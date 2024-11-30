@@ -1,6 +1,8 @@
 ---
-title: "Report"
-output: html_document
+title: "Title - something about survivor"
+output:
+  pdf_document: default
+  html_document: default
 date: "2024-10-07"
 ---
 
@@ -8,4 +10,47 @@ date: "2024-10-07"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-all my work as been in data_wrangling.Rmd so far, but created this for later
+# Intro
+
+The CBS Show Survivor is a reality TV competition where contestants compete for the title of "Sole Survivor" and the $1,000,000 grand prize. Contestants are split into tribes, placed on an island and forced to build a shelter, make fire, and find food for themselves while competing in challenges for both rewards and immunity. After each immunity challenge, the losers are sent to Tribal Council and forced to vote to eliminate one of their fellow castaways, until 2 or 3 remain. The the previously eliminated castaways vote to crown the winner of Survivor.
+
+Survivor is a game of strategy -- how can you sneak through each tribal council without being voted out? But also, Survivor is a social experiment -- "the greatest social experiment of all time" as Jeff Probst likes to claim periodically as he is hosting the show. The kick is, that the people you are competing against are also the ones who decide if you make it to the end, and eventually win (or not). I am interested in understanding what types of people make it farther in the game. In this project, I will analyze data on contestants who played in Survivor USA from seasons 1-46. This data comes from 2 sources: Kaggle's "Survivor (CBS) Dataset" and the R package 'survivoR'. 
+
+# Demographics
+
+Before exploring what types of people make it farther in the game, we want to understand what the demographics of people playing the game are. While there has always been a 50/50 split of males and females, the percentage of BIPOC and Queer contestants has not stayed constant. Figure 1 shows how the demographic makeup of Survivor contestants has changed over the first 46 seasons. 
+
+We find that over time, the percentage of BIPOC contestants has gradually increased with a spike at seasons 13-14 and 41+. In season 13, the tribes were initally split by race where there were a African American, Asian American, Latin American, and European American tribes. Season 14, maintained the diversity to show that the previous season was a conscious effort rather than a publicity stunt. Additionally, in 2021 CBS implemented a rule that at least 50% of the contestants must be non-white. Before this rule, Survivor was under representing people of color as roughly 40% of the US population is non-white.
+
+When looking at how the percentage of queer contestants has changed over the seasons, we see a pretty consistent fluctuation between 0% and 20% with a slight increase in recent seasons. This trend is generally pretty representative of the US population as roughly 10% of US adults identify as queer. Overall, we find that while Survivor has never had too big of an issue with queer representation, the same cannot be said for representation of people of color, but the show has become more racially diverse with efforts in recent years.
+
+```{r, echo=FALSE, fig.cap="Percentage of POC and Queer Contestants over Seasons 1-46", fig.height=2, fig.width=2}
+knitr::include_graphics("figures/demographics.png")
+```
+
+# What Types of People Do Well in Survivor?
+
+## Demographic Groups
+
+One way we can measure how well contestants do in Survivor is by looking at how far they make it in the game. Since seasons have varying number of contestants, from 16 to 20, we can calculate their placement percentile where closer to 0% means they were voted out earlier and closer to 100% means they made it farther in the game and potentially won.
+
+Figure 2 shows the distributions of placement percentiles for 8 different demographic groups in decreasing order. We find that male Latin Americans, on average, make it the farthest in the game, whereas female Latin Americans get voted out the earliest, on average. This is an interesting observation telling us that, among Latin American contestants, gender seems to be a large factor in how far you make it in the game. Overall, it seems that males dominate the upper half of the figure and females dominate the lower half indicating, that regardless of race, males tend to make it farther in the game than females. When looking across races, we also find that white contestants, regardless of race, tend to make it farther in the game than other races. Overall, we find that, as expected, white contestants and male contestants tend to make it farther whereas females of color tend to get voted out earlier. Please not that these are all observations and since we are not running any statistical test, we cannot make any statistically backed claims about if these groups are significantly different from another.
+
+```{r, echo=FALSE, fig.cap="Placement Percentiles of Different Demographic Groups"}
+knitr::include_graphics("figures/gender_race_finish.png")
+```
+
+## Job Types
+
+We can also look at how well different job types do in Survivor
+
+
+# References
+
+Cite these:
+
+https://www.kaggle.com/datasets/justinveiner/survivor-cbs-dataset?resource=download 
+
+package 
+
+https://danis-survivor.fandom.com/wiki/50%25_BIPOC_Rule#:~:text=The%20rule%20states%20that%20all,%2C%20Indigenous%2C%20People%20of%20Colour. 
