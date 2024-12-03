@@ -10,10 +10,8 @@ RUN apt update && apt install -y \
     manpages \
     && rm -rf /var/lib/apt/lists/*
 
-RUN R -e "install.packages(c('tidyverse', 'ggplot2'))" \
-    && R -e "install.packages('remotes')" \
-    && R -e "remotes::install_github('doehm/survivoR')"
-
+RUN R -e "install.packages('tidyverse')" \
+    && R -e "install.packages('survivoR')" 
 
 # Expose the default RStudio port
 EXPOSE 8787
