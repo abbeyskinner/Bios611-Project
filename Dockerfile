@@ -12,7 +12,7 @@ RUN apt update && apt install -y \
     libxml2-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN R -e "install.packages(c('tidyverse', 'survivoR))"
+RUN R -e "install.packages(c('tidyverse', 'survivoR'))"
 
 
 # Expose the default RStudio port
