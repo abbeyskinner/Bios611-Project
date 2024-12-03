@@ -1,6 +1,5 @@
 library(tidyverse)
 library(survivoR)
-library(ggplot2)
 
 contestant_data <- read_csv("derived_data/contestant_data.csv")
 
