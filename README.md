@@ -1,8 +1,9 @@
 611 Project - Survivor 
 ==================
 
-* add something about what im doing*
+Survivor, the CBS reality TV show, is a competition where contestants compete for the title of "Sole Survivor" and a $1,000,000 grand prize. I am interested in exploring what types of contestants tend to succeed in this unique environment. Using data on contestants from Survivor USA (seasons 1-46), I will analyze trends and investigate what factors (demographics, professions, and personality-types) may contribute to their success. The data for this project comes from 2 sources: Kaggle's "Survivor (CBS) Dataset" and the R package `survivoR`. 
 
+More information on the `survivoR` package can be found here: https://cran.r-project.org/web/packages/survivoR/survivoR.pdf 
 
 # How to use this Repo?
 
@@ -15,9 +16,8 @@
 * Go to https://localhost:8787 and sign in with the username: rstudio and password: mypassword.
 * Once connected to Rstudio, run `cd work` to navigate to the work folder.
 * Run `make clean` to clean out all the targets.
-* Finally run `make report/report.html` to build the report.
+* Finally run `make report/report.html` to build the report and enjoy!
 
-More information on the `survivoR` package can be found here: https://cran.r-project.org/web/packages/survivoR/survivoR.pdf 
 
 
 
