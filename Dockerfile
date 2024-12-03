@@ -16,7 +16,7 @@ RUN R -e "install.packages('tidyverse')"
 
 RUN R -e "install.packages('devtools')" 
 
-RUn R -e "devtools::install_github('doehm/survivoR')"
+RUN R -e "devtools::install_github('doehm/survivoR')"
 
 
 # Expose the default RStudio port
